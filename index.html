@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>EWI Solutions</title>
+<title>System Vault</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -248,6 +248,162 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
 .inner-tab.on{color:var(--ink);border-bottom-color:var(--green-mid);font-weight:500}
 .w-panel{display:none}.w-panel.on{display:block}
 
+/* ── STORE TABS (Global / Custom) ── */
+.store-tabs{
+  display:flex;gap:8px;margin-bottom:20px;
+}
+.store-tab{
+  padding:7px 16px;font-size:11.5px;font-weight:500;
+  color:var(--ink-3);cursor:pointer;
+  border:1.5px solid var(--rule);border-radius:8px;
+  background:var(--white);font-family:var(--font);
+  transition:all .15s var(--ease);
+}
+.store-tab:hover{border-color:var(--ink-4);color:var(--ink-2)}
+.store-tab.on{
+  background:var(--ink);color:var(--white);
+  border-color:var(--ink);font-weight:600;
+}
+.store-panel{display:none}.store-panel.on{display:block}
+.store-panel-desc{
+  font-size:12px;color:var(--ink-4);margin-bottom:16px;font-weight:400;
+}
+
+/* ── CUSTOM WIDGET CLIENT BADGE ── */
+.wc-client{
+  font-size:10px;font-weight:600;color:var(--green);
+  background:var(--green-lt);border:1px solid var(--green-dim);
+  border-radius:5px;padding:2px 8px;margin-top:6px;display:inline-block;
+  letter-spacing:.3px;
+}
+
+/* ─────────────────────────────────────
+   TEAM PAGE
+───────────────────────────────────── */
+.team-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px}
+.team-title{font-size:20px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.team-sub{font-size:12px;color:var(--ink-4);font-weight:400}
+.team-add-btn{
+  padding:9px 18px;font-size:12px;font-weight:600;font-family:var(--font);
+  background:var(--ink);color:var(--white);border:none;border-radius:8px;
+  cursor:pointer;transition:all .15s var(--ease);white-space:nowrap;
+  position:relative;z-index:5;
+}
+.team-add-btn:hover{background:#222420}
+
+.team-stats{
+  display:flex;gap:12px;margin-bottom:28px;
+}
+.team-stat{
+  flex:1;background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:16px 18px;
+}
+.team-stat-val{font-size:22px;font-weight:600;color:var(--ink);font-variant-numeric:tabular-nums}
+.team-stat-lbl{font-size:10.5px;font-weight:500;color:var(--ink-4);letter-spacing:.5px;text-transform:uppercase;margin-top:2px}
+
+.team-list{display:flex;flex-direction:column;gap:8px}
+
+.team-row{
+  display:flex;align-items:center;gap:14px;
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:14px 18px;cursor:pointer;transition:all .15s var(--ease);
+}
+.team-row:hover{border-color:var(--ink-4);box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.team-row-av{
+  width:36px;height:36px;border-radius:8px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;font-weight:600;color:var(--white);flex-shrink:0;letter-spacing:.5px;
+}
+.team-row-av.owner-av{background:linear-gradient(135deg,#2d1f4e,#1a1333)}
+.team-row-av.admin-av{background:var(--ink)}
+.team-row-body{flex:1;min-width:0}
+.team-row-name{font-size:13px;font-weight:600;color:var(--ink)}
+.team-row-meta{font-size:11px;color:var(--ink-4);font-weight:400;margin-top:1px;display:flex;align-items:center;gap:6px}
+.team-row-role-tag{
+  font-size:9px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;
+  padding:2px 7px;border-radius:4px;
+}
+.tag-owner{background:linear-gradient(135deg,#2d1f4e,#1a1333);color:#c9b0ff}
+.tag-admin{background:#111210;color:#fff}
+.tag-member{background:var(--green-lt);color:var(--green)}
+.team-row-apps{display:flex;gap:4px;flex-shrink:0}
+.team-app-dot{
+  width:26px;height:26px;border-radius:6px;
+  background:var(--surface);border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;
+}
+.team-app-more{
+  width:26px;height:26px;border-radius:6px;
+  background:var(--rule-lt);border:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:600;color:var(--ink-3);
+}
+.team-row-arrow{color:var(--ink-4);font-size:14px;flex-shrink:0;margin-left:4px}
+
+/* ── Team modals ── */
+.tm-field{margin-bottom:18px}
+.tm-label{font-size:10px;font-weight:600;color:var(--ink-3);letter-spacing:.8px;text-transform:uppercase;margin-bottom:6px;display:block}
+.tm-input{
+  width:100%;padding:10px 14px;font-size:13px;font-family:var(--font);
+  border:1.5px solid var(--rule);border-radius:8px;background:var(--surface);
+  color:var(--ink);outline:none;transition:border-color .15s;
+}
+.tm-input:focus{border-color:var(--green-mid)}
+.tm-input::placeholder{color:var(--ink-4)}
+
+.tm-access-opts{display:flex;gap:8px}
+.tm-access-opts-stack{display:flex;flex-direction:column;gap:8px}
+.tm-radio-card{
+  flex:1;display:flex;align-items:flex-start;gap:10px;
+  padding:12px 14px;border:1.5px solid var(--rule);border-radius:8px;
+  cursor:pointer;transition:all .15s;background:var(--white);
+}
+.tm-radio-card:hover{border-color:var(--ink-4)}
+.tm-radio-card:has(input:checked){border-color:var(--green-mid);background:var(--green-lt)}
+.tm-radio-card.compact{padding:9px 12px}
+.tm-radio-card.compact .tm-radio-title{font-size:11.5px}
+.tm-radio-card input{margin-top:2px;accent-color:var(--green-mid)}
+.tm-radio-title{font-size:12px;font-weight:600;color:var(--ink)}
+.tm-radio-desc{font-size:10.5px;color:var(--ink-4);line-height:1.4;margin-top:2px}
+
+.tm-app-list{display:flex;flex-direction:column;gap:6px}
+.tm-app-row{
+  display:flex;align-items:center;gap:10px;
+  padding:9px 12px;border:1px solid var(--rule);border-radius:8px;
+  background:var(--white);transition:all .12s;
+}
+.tm-app-row.assigned{border-color:var(--green-dim);background:var(--green-lt)}
+.tm-app-icon{font-size:16px;flex-shrink:0}
+.tm-app-name{font-size:12px;font-weight:500;color:var(--ink);flex:1}
+.tm-app-tog{position:relative;width:36px;height:20px;flex-shrink:0}
+.tm-app-tog input{opacity:0;width:0;height:0;position:absolute}
+.tm-app-tog .tog-track{
+  position:absolute;inset:0;background:var(--rule);border-radius:10px;
+  transition:background .15s;cursor:pointer;
+}
+.tm-app-tog input:checked+.tog-track{background:var(--green-mid)}
+.tm-app-tog .tog-thumb{
+  position:absolute;top:2px;left:2px;width:16px;height:16px;
+  background:#fff;border-radius:50%;transition:transform .15s;
+  pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.15);
+}
+.tm-app-tog input:checked~.tog-thumb{transform:translateX(16px)}
+
+.pin-display{
+  font-family:var(--mono);font-size:32px;font-weight:500;letter-spacing:8px;
+  color:var(--ink);background:var(--surface);border:2px dashed var(--rule);
+  border-radius:10px;padding:16px 24px;text-align:center;
+  user-select:all;
+}
+.pin-display.small{font-size:20px;letter-spacing:6px;padding:10px 16px}
+
+.tm-remove-btn{
+  color:#c0392b !important;border-color:#f0c4bb !important;
+  font-size:11px !important;white-space:nowrap;
+}
+.tm-remove-btn:hover{background:#fdf0ee !important}
+
 /* ─────────────────────────────────────
    WIDGET GRID
 ───────────────────────────────────── */
@@ -309,6 +465,10 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
 }
 .wc-price{font-size:12.5px;font-weight:500;color:var(--ink-2);font-family:var(--mono)}
 .wc-price small{font-size:10px;font-weight:400;color:var(--ink-4)}
+.wc-impact-tag{
+  font-size:10px;font-weight:600;letter-spacing:.4px;
+  padding:3px 10px;border-radius:5px;white-space:nowrap;
+}
 
 .wc-btn{
   display:inline-flex;align-items:center;gap:5px;
@@ -324,27 +484,132 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
 /* ─────────────────────────────────────
    BILLING PAGE
 ───────────────────────────────────── */
-.bill-wrap{max-width:520px}
-.bill-hero{
+.bill-wrap{max-width:640px}
+
+/* Hero */
+.bill-hero-new{
   background:var(--ink);border-radius:12px;
-  padding:26px 28px;margin-bottom:16px;
-  display:flex;align-items:flex-end;justify-content:space-between
+  padding:28px 28px;margin-bottom:20px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
 }
+.bill-hero-main{flex:1}
 .bill-lbl{font-size:9px;font-weight:400;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
-.bill-amt{font-size:38px;font-weight:300;color:var(--white);line-height:1;letter-spacing:-1px;font-family:var(--font)}
+.bill-hero-amt{display:flex;align-items:baseline}
+.bill-hero-amt span:first-child{font-size:38px;font-weight:300;color:var(--white);line-height:1;letter-spacing:-1px;font-family:var(--font)}
 .bill-per{font-size:12px;font-weight:400;color:rgba(255,255,255,.4);margin-left:4px}
 .bill-next{font-size:10.5px;font-weight:400;color:rgba(255,255,255,.3);margin-top:6px}
-.bill-stat-v{font-size:22px;font-weight:300;color:var(--white);text-align:right;letter-spacing:-.5px}
-.bill-stat-l{font-size:9px;font-weight:400;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;text-align:right}
-.bill-card{background:var(--white);border-radius:10px;border:1px solid var(--rule);overflow:hidden}
-.bill-row{
-  display:flex;align-items:center;padding:12px 20px;
-  border-bottom:1px solid var(--rule-lt);font-size:12.5px
+.bill-hero-stats{display:flex;gap:20px}
+.bill-hero-stat{text-align:right}
+.bill-hero-stat-val{font-size:22px;font-weight:300;color:var(--white);letter-spacing:-.5px}
+.bill-hero-stat-lbl{font-size:9px;font-weight:400;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px}
+
+/* Sections */
+.bill-section{
+  background:var(--white);border:1px solid var(--rule);border-radius:12px;
+  padding:22px 24px;margin-bottom:14px;
 }
-.bill-row:last-child{border-bottom:none}
-.bill-row-ic{font-size:15px;margin-right:12px;opacity:.8}
-.bill-row-name{font-weight:400;color:var(--ink);flex:1}
+.bill-section-head{display:flex;align-items:flex-start;gap:14px}
+.bill-section-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.bill-section-title{font-size:14px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.bill-section-desc{font-size:11.5px;color:var(--ink-4);font-weight:400;line-height:1.5}
+.bill-section-price{
+  font-size:14px;font-weight:600;color:var(--ink);font-family:var(--mono);
+  white-space:nowrap;margin-left:auto;flex-shrink:0;
+}
+.bill-section-price small{font-size:10px;font-weight:400;color:var(--ink-4)}
+
+/* Licence bar */
+/* Licence tier picker */
+.licence-tiers{display:flex;gap:10px}
+.licence-tier{
+  flex:1;border-radius:10px;padding:18px 16px;
+  border:2px solid var(--rule);background:var(--white);
+  cursor:pointer;transition:all .18s var(--ease);position:relative;
+}
+.licence-tier:hover{border-color:var(--ink-4)}
+.licence-tier.active{border-color:var(--green-mid);background:var(--green-lt)}
+.licence-tier.active::after{
+  content:'✓ Current';position:absolute;top:10px;right:12px;
+  font-size:9px;font-weight:700;color:var(--green-mid);
+  letter-spacing:.4px;text-transform:uppercase;
+}
+.licence-tier.pending{border-color:var(--ink);background:var(--rule-lt)}
+.licence-tier.pending::after{
+  content:'● Selected';position:absolute;top:10px;right:12px;
+  font-size:9px;font-weight:700;color:var(--ink);
+  letter-spacing:.4px;text-transform:uppercase;
+}
+
+/* Tier confirm bar */
+.tier-confirm-bar{
+  position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:var(--ink);color:var(--white);
+  padding:14px 28px;display:flex;align-items:center;justify-content:space-between;gap:16px;
+  transform:translateY(100%);transition:transform .25s var(--ease);
+  box-shadow:0 -4px 20px rgba(0,0,0,.2);
+}
+.tier-confirm-bar.show{transform:translateY(0)}
+.tier-confirm-msg{font-size:12px;font-weight:400;line-height:1.5;flex:1}
+.tier-confirm-msg b{font-weight:600}
+.tier-confirm-btns{display:flex;gap:8px;flex-shrink:0}
+.tier-confirm-cancel{
+  padding:8px 16px;font-size:11px;font-weight:600;font-family:var(--font);
+  background:none;border:1.5px solid rgba(255,255,255,.2);border-radius:7px;
+  color:rgba(255,255,255,.7);cursor:pointer;transition:all .12s;
+}
+.tier-confirm-cancel:hover{border-color:rgba(255,255,255,.4);color:#fff}
+.tier-confirm-apply{
+  padding:8px 20px;font-size:11px;font-weight:600;font-family:var(--font);
+  background:var(--green-mid);border:none;border-radius:7px;
+  color:#fff;cursor:pointer;transition:all .12s;
+}
+.tier-confirm-apply:hover{background:var(--green)}
+.licence-tier-name{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:4px}
+.licence-tier-price{font-size:22px;font-weight:600;color:var(--ink);font-family:var(--mono)}
+.licence-tier-price small{font-size:10px;font-weight:400;color:var(--ink-4)}
+.licence-tier-hours{
+  font-size:11px;color:var(--ink-3);margin-top:8px;padding-top:8px;
+  border-top:1px solid var(--rule);line-height:1.5;
+}
+.licence-tier-hours strong{color:var(--ink);font-weight:600}
+
+.bill-licence-bar{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);
+  font-size:11px;
+}
+.bill-licence-status{color:var(--green-mid);font-weight:600}
+.bill-licence-key{color:var(--ink-4);font-family:var(--mono);font-size:10.5px;letter-spacing:.3px}
+
+/* Impact tier cards */
+.bill-tiers{display:flex;gap:10px}
+.bill-tier{
+  flex:1;border-radius:10px;padding:16px 18px;
+  border:1.5px solid var(--rule);transition:all .15s;
+}
+.bill-tier-label{font-size:10px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;margin-bottom:8px}
+.bill-tier-price{font-size:20px;font-weight:600;color:var(--ink);font-family:var(--mono)}
+.bill-tier-price small{font-size:10px;font-weight:400;color:var(--ink-4)}
+.bill-tier-count{font-size:10.5px;color:var(--ink-4);margin-top:6px;font-weight:400}
+.bill-tier-subtotal{font-size:11px;font-weight:600;color:var(--ink-2);margin-top:4px;font-family:var(--mono)}
+
+/* Breakdown */
+.bill-breakdown{
+  background:var(--surface);border:1px solid var(--rule);border-radius:10px;overflow:hidden;
+}
+.bill-row-line{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:12px 18px;border-bottom:1px solid var(--rule);font-size:12px;
+}
+.bill-row-line:last-child{border-bottom:none}
+.bill-row-name{font-weight:400;color:var(--ink)}
 .bill-row-price{font-weight:500;color:var(--ink-2);font-family:var(--mono);font-size:12px}
+.bill-row-total{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px;background:var(--ink);color:var(--white);
+  font-size:13px;font-weight:600;
+}
+.bill-row-total span:last-child{font-family:var(--mono)}
 
 /* placeholder */
 .placeholder{text-align:center;padding:80px 20px;color:var(--ink-4);font-size:13px;font-weight:400}
@@ -509,7 +774,7 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
           <svg viewBox="0 0 16 16"><path d="M3 13 C3 13 5 8 8 6 C11 4 14 5 14 5 C14 5 13 8 10 10 C7 12 3 13 3 13Z"/><path d="M3 13 L7 9"/></svg>
         </div>
         <div>
-          <div class="sb-wordmark">EWI Solutions</div>
+          <div class="sb-wordmark">System Vault</div>
           <div class="sb-tagline">Workspace</div>
         </div>
       </div>
@@ -544,15 +809,7 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
         </div>
       </nav>
 
-      <div class="sb-foot">
-        <div class="co-block">
-          <div class="co-av">EW</div>
-          <div>
-            <div class="co-name">EWI Solutions</div>
-            <div class="co-plan">Growth Plan</div>
-          </div>
-        </div>
-      </div>
+      <!-- footer removed — redundant -->
     </div>
 
     <!-- PULL HANDLE -->
@@ -570,11 +827,6 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
         <div class="tb-icon">
           <svg viewBox="0 0 16 16"><path d="M8 1a4 4 0 014 4c0 3 1.5 4 1.5 4H2.5S4 8 4 5a4 4 0 014-4zM6.5 13a1.5 1.5 0 003 0"/></svg>
         </div>
-        <button class="workflow-btn" onclick="openModal()">
-          <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="2"/><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.9 2.9l1.4 1.4M9.7 9.7l1.4 1.4M2.9 11.1l1.4-1.4M9.7 4.3l1.4-1.4"/></svg>
-          Alter my workflow
-        </button>
-        <div class="tb-av">EW</div>
       </div>
     </div>
 
@@ -597,29 +849,126 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
           <div class="w-grid" id="activeGrid"></div>
         </div>
         <div class="w-panel" id="wp-store">
-          <div class="w-grid" id="storeGrid"></div>
+          <div class="store-tabs">
+            <button class="store-tab on" onclick="switchStoreTab('global',this)">🌐 Global widgets</button>
+            <button class="store-tab" onclick="switchStoreTab('custom',this)">🔧 Custom widgets</button>
+          </div>
+          <div class="store-panel on" id="sp-global">
+            <div class="store-panel-desc">General-purpose widgets available to any organisation.</div>
+            <div class="w-grid" id="storeGridGlobal"></div>
+          </div>
+          <div class="store-panel" id="sp-custom">
+            <div class="store-panel-desc">Bespoke widgets built specifically for your organisation.</div>
+            <div class="w-grid" id="storeGridCustom"></div>
+          </div>
         </div>
       </div>
 
       <!-- BILLING -->
       <div class="pg" id="pg-billing">
         <div class="bill-wrap">
-          <div class="bill-hero">
-            <div>
-              <div class="bill-lbl">Monthly total</div>
-              <div><span class="bill-amt" id="billAmt">£89</span><span class="bill-per">/mo</span></div>
-              <div class="bill-next">Next billing: 1 Apr 2026</div>
+
+          <!-- Annual total hero -->
+          <div class="bill-hero-new">
+            <div class="bill-hero-main">
+              <div class="bill-lbl">Annual total</div>
+              <div class="bill-hero-amt"><span id="billAmt">£0</span><span class="bill-per">/year</span></div>
+              <div class="bill-next">Next renewal: 1 Jan 2027</div>
             </div>
-            <div>
-              <div class="bill-stat-v" id="billCount">4</div>
-              <div class="bill-stat-l">Active</div>
+            <div class="bill-hero-stats">
+              <div class="bill-hero-stat">
+                <div class="bill-hero-stat-val" id="billCount">0</div>
+                <div class="bill-hero-stat-lbl">Active widgets</div>
+              </div>
+              <div class="bill-hero-stat">
+                <div class="bill-hero-stat-val" id="billTeamCount">0</div>
+                <div class="bill-hero-stat-lbl">Team members</div>
+              </div>
             </div>
           </div>
-          <div class="bill-card" id="billRows"></div>
+
+          <!-- Licence tiers section -->
+          <div class="bill-section">
+            <div class="bill-section-head" style="margin-bottom:18px">
+              <div class="bill-section-icon">🔑</div>
+              <div>
+                <div class="bill-section-title">System Vault Licence</div>
+                <div class="bill-section-desc">Your licence tier determines platform access and included build hours.</div>
+              </div>
+            </div>
+
+            <div class="licence-tiers" id="licenceTiers"></div>
+
+            <div class="bill-licence-bar" style="margin-top:16px">
+              <span class="bill-licence-status">● Active</span>
+              <span class="bill-licence-key">Licence key: SV-2026-XXXX-XXXX</span>
+            </div>
+          </div>
+
+          <!-- Impact breakdown -->
+          <div class="bill-section">
+            <div class="bill-section-head" style="margin-bottom:16px">
+              <div class="bill-section-icon">📊</div>
+              <div>
+                <div class="bill-section-title">Widget costs by impact</div>
+                <div class="bill-section-desc">Each widget is rated by impact level. See Help & Docs for how impact is assessed.</div>
+              </div>
+            </div>
+
+            <!-- Impact tier cards -->
+            <div class="bill-tiers" id="billTiers"></div>
+          </div>
+
+          <!-- Line items breakdown -->
+          <div class="bill-section">
+            <div class="bill-section-head" style="margin-bottom:16px">
+              <div class="bill-section-icon">📋</div>
+              <div>
+                <div class="bill-section-title">Breakdown</div>
+                <div class="bill-section-desc">All charges on your current plan.</div>
+              </div>
+            </div>
+            <div class="bill-breakdown">
+              <div class="bill-row-line" id="billLicenceRow">
+                <span class="bill-row-name">🔑 System Vault Licence (Base)</span>
+                <span class="bill-row-price">£2,500</span>
+              </div>
+              <div id="billRows"></div>
+              <div class="bill-row-total" id="billTotal"></div>
+            </div>
+          </div>
+
         </div>
       </div>
 
-      <div class="pg" id="pg-team"><div class="placeholder">Team management — coming soon</div></div>
+      <div class="pg" id="pg-team">
+        <div class="team-header">
+          <div>
+            <div class="team-title">Team</div>
+            <div class="team-sub">Manage who has access and what they can use.</div>
+          </div>
+          <button class="team-add-btn" onclick="event.stopPropagation();openAddMember()">+ Add member</button>
+        </div>
+
+        <!-- Stats row -->
+        <div class="team-stats">
+          <div class="team-stat">
+            <div class="team-stat-val" id="tsTotal">0</div>
+            <div class="team-stat-lbl">Total members</div>
+          </div>
+          <div class="team-stat">
+            <div class="team-stat-val" id="tsAdmin">0</div>
+            <div class="team-stat-lbl">Admins</div>
+          </div>
+          <div class="team-stat">
+            <div class="team-stat-val" id="tsActive">0</div>
+            <div class="team-stat-lbl">Active seats</div>
+          </div>
+        </div>
+
+        <!-- Members list -->
+        <div class="team-list" id="teamList"></div>
+      </div>
       <div class="pg" id="pg-settings"><div class="placeholder">Settings — coming soon</div></div>
       <div class="pg" id="pg-custom"><div class="placeholder">Custom widget requests — coming soon</div></div>
       <div class="pg" id="pg-help"><div class="placeholder">Help &amp; docs — coming soon</div></div>
@@ -640,12 +989,12 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
       </div>
       <div class="price-strip">
         <div>
-          <div class="ps-label">Monthly total</div>
+          <div class="ps-label">Annual total</div>
           <div style="display:flex;align-items:baseline;gap:8px">
             <span class="ps-current" id="psCurrent">£89</span>
             <span style="font-size:10px;color:rgba(255,255,255,.25)">→</span>
             <span class="ps-new" id="psNew">£89</span>
-            <span class="ps-per">/mo</span>
+            <span class="ps-per">/year</span>
           </div>
         </div>
         <div class="ps-delta zero" id="psDelta">No changes</div>
@@ -669,25 +1018,174 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
   </div>
 </div>
 
+<!-- ── ADD MEMBER MODAL ── -->
+<div class="overlay" id="addMemberOverlay" onclick="if(event.target===this)closeAddMember()">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-bar" style="background:var(--ink)">
+      <div class="modal-bar-top">
+        <div>
+          <div class="modal-title">Add team member</div>
+          <div class="modal-sub">They'll get a PIN to log in — no email needed.</div>
+        </div>
+        <button class="modal-x" onclick="closeAddMember()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" style="padding:20px 24px">
+      <div class="tm-field">
+        <label class="tm-label">Full name</label>
+        <input class="tm-input" id="amName" type="text" placeholder="e.g. Dave Wilson" autocomplete="off">
+      </div>
+      <div class="tm-field">
+        <label class="tm-label">Role</label>
+        <input class="tm-input" id="amRole" type="text" placeholder="e.g. Site Supervisor, Driver, Manager">
+      </div>
+      <div class="tm-field">
+        <label class="tm-label">Access level</label>
+        <div class="tm-access-opts-stack">
+          <label class="tm-radio-card">
+            <input type="radio" name="amAccess" value="member" checked>
+            <div class="tm-radio-inner">
+              <div class="tm-radio-title">👤 Member</div>
+              <div class="tm-radio-desc">Can only open and use the apps assigned to them. No admin controls.</div>
+            </div>
+          </label>
+          <label class="tm-radio-card">
+            <input type="radio" name="amAccess" value="admin">
+            <div class="tm-radio-inner">
+              <div class="tm-radio-title">🔑 Admin</div>
+              <div class="tm-radio-desc">Can manage members below them and has admin rights within their assigned apps. Cannot access billing or remove other admins.</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="tm-field">
+        <label class="tm-label">Assign apps</label>
+        <div class="tm-app-list" id="amAppList"></div>
+      </div>
+    </div>
+    <div class="modal-foot" style="border-top:1px solid var(--rule)">
+      <div class="mf-note" id="amNote">Fill in the details above</div>
+      <div class="mf-btns">
+        <button class="mf-cancel" onclick="closeAddMember()">Cancel</button>
+        <button class="mf-confirm" id="amConfirm" onclick="confirmAddMember()">Add & generate PIN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── PIN REVEAL MODAL ── -->
+<div class="overlay" id="pinOverlay" onclick="if(event.target===this)closePinReveal()">
+  <div class="modal" style="max-width:380px">
+    <div class="modal-body" style="padding:32px 24px;text-align:center">
+      <div style="font-size:36px;margin-bottom:8px">🔐</div>
+      <div class="tm-label" style="margin-bottom:4px">Member added successfully</div>
+      <div id="pinMemberName" style="font-size:18px;font-weight:600;color:var(--ink);margin-bottom:20px"></div>
+      <div class="tm-label" style="margin-bottom:8px">Their login PIN</div>
+      <div class="pin-display" id="pinDisplay"></div>
+      <div style="font-size:11px;color:var(--ink-4);margin-top:14px;line-height:1.6">
+        Write this down or share it with them directly.<br>
+        They enter this PIN at the login screen to access their apps.
+      </div>
+    </div>
+    <div class="modal-foot" style="border-top:1px solid var(--rule);justify-content:center">
+      <div class="mf-btns">
+        <button class="mf-confirm" onclick="closePinReveal()" style="width:100%">Done</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MANAGE ACCESS MODAL ── -->
+<div class="overlay" id="manageOverlay" onclick="if(event.target===this)closeManageAccess()">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-bar" style="background:var(--ink)">
+      <div class="modal-bar-top">
+        <div>
+          <div class="modal-title" id="maTitle">Manage access</div>
+          <div class="modal-sub" id="maSub"></div>
+        </div>
+        <button class="modal-x" onclick="closeManageAccess()">✕</button>
+      </div>
+    </div>
+    <div class="modal-body" style="padding:20px 24px">
+      <div class="tm-field">
+        <label class="tm-label">Access level</label>
+        <div class="tm-access-opts" id="maAccessOpts">
+          <label class="tm-radio-card compact">
+            <input type="radio" name="maAccess" value="member">
+            <div class="tm-radio-inner">
+              <div class="tm-radio-title">👤 Member</div>
+            </div>
+          </label>
+          <label class="tm-radio-card compact">
+            <input type="radio" name="maAccess" value="admin">
+            <div class="tm-radio-inner">
+              <div class="tm-radio-title">🔑 Admin</div>
+            </div>
+          </label>
+        </div>
+      </div>
+      <div class="tm-field">
+        <label class="tm-label">PIN code</label>
+        <div class="pin-display small" id="maPin"></div>
+      </div>
+      <div class="tm-field">
+        <label class="tm-label">App access</label>
+        <div class="tm-app-list" id="maAppList"></div>
+      </div>
+    </div>
+    <div class="modal-foot" style="border-top:1px solid var(--rule)">
+      <div class="mf-btns" style="width:100%;display:flex;gap:8px">
+        <button class="mf-cancel tm-remove-btn" id="maRemoveBtn" onclick="removeMember()">Remove from team</button>
+        <button class="mf-confirm" onclick="saveManageAccess()" style="flex:1">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Tier switch confirm bar -->
+<div class="tier-confirm-bar" id="tierConfirmBar">
+  <div class="tier-confirm-msg" id="tierConfirmMsg"></div>
+  <div class="tier-confirm-btns">
+    <button class="tier-confirm-cancel" onclick="cancelTierSwitch()">Cancel</button>
+    <button class="tier-confirm-apply" onclick="confirmTierSwitch()">Confirm change</button>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 
 <script>
 const ALL = [
-  {id:'opinion-ape', name:'Opinion Ape',  icon:'🐒', cat:'People',     price:29, active:true,  isNew:false, desc:'Employee suggestions, voting and manager responses — all in one place.'},
-  {id:'pulse-check', name:'Pulse Check',  icon:'📊', cat:'People',     price:19, active:true,  isNew:false, desc:'Automated weekly morale surveys with trend tracking over time.'},
-  {id:'desk-flow',   name:'Desk Flow',    icon:'🗓️', cat:'Facilities', price:24, active:true,  isNew:false, desc:'Hot desk and meeting room booking — claimed in seconds from any device.'},
-  {id:'onboard-ez',  name:'OnboardEZ',   icon:'🚀', cat:'HR',         price:17, active:true,  isNew:false, desc:'Structured onboarding checklists for new starters, tracked end-to-end.'},
-  {id:'shiftwise',   name:'ShiftWise',   icon:'🕐', cat:'Operations', price:22, active:false, isNew:false, desc:'Shift scheduling and absence logging with one-tap manager approvals.'},
-  {id:'doc-vault',   name:'Doc Vault',   icon:'📁', cat:'Compliance', price:15, active:false, isNew:false, desc:'Central searchable document library — policies and SOPs always current.'},
-  {id:'kudos',       name:'Kudos Board', icon:'⭐', cat:'Culture',    price:12, active:false, isNew:true,  desc:'Peer recognition that surfaces to a weekly company highlight digest.'},
-  {id:'incident-log',name:'Incident Log',icon:'🛡️', cat:'Compliance', price:18, active:false, isNew:false, desc:'Fully auditable workplace incident logging with required-field guidance.'},
-  {id:'quick-poll',  name:'Quick Poll',  icon:'🗳️', cat:'Comms',      price:9,  active:false, isNew:true,  desc:'Fire instant polls to the whole company or a specific team in seconds.'},
+  {id:'opinion-ape', name:'Opinion Ape',  icon:'🐒', cat:'People',     impact:'low',    active:true,  isNew:false, type:'global', desc:'Employee suggestions, voting and manager responses — all in one place.'},
+  {id:'pulse-check', name:'Pulse Check',  icon:'📊', cat:'People',     impact:'low',    active:true,  isNew:false, type:'global', desc:'Automated weekly morale surveys with trend tracking over time.'},
+  {id:'desk-flow',   name:'Desk Flow',    icon:'🗓️', cat:'Facilities', impact:'low',    active:true,  isNew:false, type:'global', desc:'Hot desk and meeting room booking — claimed in seconds from any device.'},
+  {id:'onboard-ez',  name:'OnboardEZ',   icon:'🚀', cat:'HR',         impact:'medium', active:true,  isNew:false, type:'global', desc:'Structured onboarding checklists for new starters, tracked end-to-end.'},
+  {id:'shiftwise',   name:'ShiftWise',   icon:'🕐', cat:'Operations', impact:'medium', active:false, isNew:false, type:'global', desc:'Shift scheduling and absence logging with one-tap manager approvals.'},
+  {id:'doc-vault',   name:'Doc Vault',   icon:'📁', cat:'Compliance', impact:'low',    active:false, isNew:false, type:'global', desc:'Central searchable document library — policies and SOPs always current.'},
+  {id:'kudos',       name:'Kudos Board', icon:'⭐', cat:'Culture',    impact:'low',    active:false, isNew:true,  type:'global', desc:'Peer recognition that surfaces to a weekly company highlight digest.'},
+  {id:'incident-log',name:'Incident Log',icon:'🛡️', cat:'Compliance', impact:'medium', active:false, isNew:false, type:'global', desc:'Fully auditable workplace incident logging with required-field guidance.'},
+  {id:'quick-poll',  name:'Quick Poll',  icon:'🗳️', cat:'Comms',      impact:'low',    active:false, isNew:true,  type:'global', desc:'Fire instant polls to the whole company or a specific team in seconds.'},
+  {id:'lrl-fleet',   name:'LRL Fleet',   icon:'🚛', cat:'Fleet',      impact:'high',   active:false, isNew:false, type:'custom', client:'Lancashire Renewables', desc:'Custom fleet dashboard — vehicle check sheets, operator management, and live asset tracking.'},
 ];
+
+const IMPACT = {
+  low:    {label:'Low Impact',    price:4000,  color:'#3498db', bg:'#eef6ff', border:'#b0d0f0'},
+  medium: {label:'Medium Impact', price:10000, color:'#e67e22', bg:'#fff5ee', border:'#f0c8a0'},
+  high:   {label:'High Impact',   price:30000, color:'#8e44ad', bg:'#f5eeff', border:'#d0b0f0'},
+};
+const TIERS = {
+  base:     {label:'Base',     price:2500,  hours:0,   hourlyRate:50, desc:'Platform access with pay-as-you-go custom build at £50/hr.'},
+  business: {label:'Business', price:8000,  hours:100, hourlyRate:50, desc:'100 hours of custom build time included per year.'},
+  pro:      {label:'Pro',      price:20000, hours:500, hourlyRate:50, desc:'500 hours of custom build time included per year.'},
+};
+let currentTier = 'base';
+const LICENSE_FEE = () => TIERS[currentTier].price;
 
 let draft = {};
 
-const committedTotal = () => ALL.reduce((s,w)=>w.active?s+w.price:s,0);
-const draftTotal     = () => ALL.reduce((s,w)=>draft[w.id]?s+w.price:s,0);
+const widgetTotal    = (list) => list.reduce((s,w)=>s+IMPACT[w.impact].price,0);
+const committedTotal = () => LICENSE_FEE() + ALL.filter(w=>w.active).reduce((s,w)=>s+IMPACT[w.impact].price,0);
+const draftTotal     = () => LICENSE_FEE() + ALL.filter(w=>draft[w.id]).reduce((s,w)=>s+IMPACT[w.impact].price,0);
 const hasDraft       = () => ALL.some(w=>draft[w.id]!==w.active);
 
 // ── WORKSPACE ──
@@ -696,7 +1194,7 @@ function renderWS(){
   const store  = ALL.filter(w=>!w.active);
 
   document.getElementById('activeGrid').innerHTML = active.length
-    ? active.map((w,i)=>`
+    ? active.map((w,i)=>{const imp=IMPACT[w.impact];return `
       <div class="wc" id="wc-${w.id}" style="animation:fadeUp .28s ${i*.04}s var(--ease) both">
         <div class="wc-header">
           <div class="wc-icon">${w.icon}</div>
@@ -705,16 +1203,18 @@ function renderWS(){
         <div class="wc-name">${w.name}</div>
         <div class="wc-desc">${w.desc}</div>
         <div class="wc-foot">
-          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <span class="wc-impact-tag" style="background:${imp.bg};color:${imp.color};border:1px solid ${imp.border}">${imp.label}</span>
           <button class="wc-btn btn-rem" onclick="quickRemove('${w.id}')">Remove</button>
         </div>
-      </div>`).join('')
+      </div>`}).join('')
     : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">
         No active widgets — open the Widget Store tab to add some.
        </div>`;
 
-  document.getElementById('storeGrid').innerHTML = store.length
-    ? store.map((w,i)=>`
+  const globalStore = store.filter(w=>w.type==='global');
+  const customStore = store.filter(w=>w.type==='custom');
+
+  const renderStoreCard = (w,i) => {const imp=IMPACT[w.impact];return `
       <div class="wc store-card" id="wcs-${w.id}" style="animation:fadeUp .28s ${i*.04}s var(--ease) both" onclick="quickAdd('${w.id}')">
         <div class="wc-header">
           <div class="wc-icon">${w.icon}</div>
@@ -722,12 +1222,20 @@ function renderWS(){
         </div>
         <div class="wc-name">${w.name}</div>
         <div class="wc-desc">${w.desc}</div>
+        ${w.client?`<div class="wc-client">Built for ${w.client}</div>`:''}
         <div class="wc-foot">
-          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <span class="wc-impact-tag" style="background:${imp.bg};color:${imp.color};border:1px solid ${imp.border}">${imp.label}</span>
           <button class="wc-btn btn-add" onclick="event.stopPropagation();quickAdd('${w.id}')">+ Add</button>
         </div>
-      </div>`).join('')
-    : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">All widgets are active.</div>`;
+      </div>`};
+
+  document.getElementById('storeGridGlobal').innerHTML = globalStore.length
+    ? globalStore.map(renderStoreCard).join('')
+    : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">All global widgets are active.</div>`;
+
+  document.getElementById('storeGridCustom').innerHTML = customStore.length
+    ? customStore.map(renderStoreCard).join('')
+    : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">No custom widgets available yet.</div>`;
 }
 
 function quickAdd(id){
@@ -757,17 +1265,107 @@ function quickRemove(id){
 }
 
 // ── BILLING ──
+function fmtPrice(n){return '£'+n.toLocaleString('en-GB')}
+
+let pendingTier = null;
+
+function selectTier(tier){
+  if(tier===currentTier){
+    // clicking current tier cancels any pending change
+    pendingTier=null;
+    renderBilling();
+    document.getElementById('tierConfirmBar').classList.remove('show');
+    return;
+  }
+  pendingTier=tier;
+  renderBilling();
+  // Show confirm bar
+  const bar=document.getElementById('tierConfirmBar');
+  const pt=TIERS[tier];
+  const ct=TIERS[currentTier];
+  const diff=pt.price-ct.price;
+  const direction=diff>0?'increase':'decrease';
+  document.getElementById('tierConfirmMsg').innerHTML=
+    `Switch from <b>${ct.label}</b> to <b>${pt.label}</b>? Your annual licence will ${direction} by <b>${fmtPrice(Math.abs(diff))}</b>.`;
+  bar.classList.add('show');
+}
+
+function confirmTierSwitch(){
+  if(!pendingTier)return;
+  currentTier=pendingTier;
+  pendingTier=null;
+  document.getElementById('tierConfirmBar').classList.remove('show');
+  renderBilling();
+  showToast(`Switched to ${TIERS[currentTier].label} tier`);
+}
+
+function cancelTierSwitch(){
+  pendingTier=null;
+  document.getElementById('tierConfirmBar').classList.remove('show');
+  renderBilling();
+}
+
 function renderBilling(){
   const active=ALL.filter(w=>w.active);
+  const tier=TIERS[currentTier];
   const total=committedTotal();
-  document.getElementById('billAmt').textContent=`£${total}`;
+
+  // Hero
+  document.getElementById('billAmt').textContent=fmtPrice(total);
   document.getElementById('billCount').textContent=active.length;
-  document.getElementById('billRows').innerHTML=active.map(w=>`
-    <div class="bill-row">
-      <span class="bill-row-ic">${w.icon}</span>
-      <span class="bill-row-name">${w.name}</span>
-      <span class="bill-row-price">£${w.price}/mo</span>
-    </div>`).join('');
+  document.getElementById('billTeamCount').textContent=TEAM.length;
+
+  // Licence tiers
+  document.getElementById('licenceTiers').innerHTML=['base','business','pro'].map(t=>{
+    const tr=TIERS[t];
+    const isActive=t===currentTier;
+    const isPending=t===pendingTier;
+    let hoursHtml='';
+    if(t==='base') hoursHtml=`<div class="licence-tier-hours">No build hours included.<br>Custom work charged at <strong>£${tr.hourlyRate}/hr</strong></div>`;
+    else hoursHtml=`<div class="licence-tier-hours"><strong>${tr.hours} hours</strong> of build time/year included.<br>Additional hours at <strong>£${tr.hourlyRate}/hr</strong></div>`;
+    const cls=isActive?'active':isPending?'pending':'';
+    return `
+    <div class="licence-tier ${cls}" onclick="selectTier('${t}')">
+      <div class="licence-tier-name">${tr.label}</div>
+      <div class="licence-tier-price">${fmtPrice(tr.price)}<small>/year</small></div>
+      ${hoursHtml}
+    </div>`;
+  }).join('');
+
+  // Licence row in breakdown
+  document.getElementById('billLicenceRow').innerHTML=`
+    <span class="bill-row-name">🔑 System Vault Licence (${tier.label})</span>
+    <span class="bill-row-price">${fmtPrice(tier.price)}</span>`;
+
+  // Impact tier cards
+  const tiers=['low','medium','high'];
+  document.getElementById('billTiers').innerHTML=tiers.map(t=>{
+    const imp=IMPACT[t];
+    const inTier=active.filter(w=>w.impact===t);
+    const subtotal=inTier.length*imp.price;
+    return `
+    <div class="bill-tier" style="border-color:${imp.border};background:${imp.bg}">
+      <div class="bill-tier-label" style="color:${imp.color}">${imp.label}</div>
+      <div class="bill-tier-price">${fmtPrice(imp.price)}<small>/year each</small></div>
+      <div class="bill-tier-count">${inTier.length} widget${inTier.length!==1?'s':''} active</div>
+      ${inTier.length?`<div class="bill-tier-subtotal">Subtotal: ${fmtPrice(subtotal)}</div>`:''}
+    </div>`;
+  }).join('');
+
+  // Breakdown rows
+  document.getElementById('billRows').innerHTML=active.map(w=>{
+    const imp=IMPACT[w.impact];
+    return `
+    <div class="bill-row-line">
+      <span class="bill-row-name">${w.icon} ${w.name} <span style="font-size:10px;color:${imp.color};font-weight:600">${imp.label}</span></span>
+      <span class="bill-row-price">${fmtPrice(imp.price)}</span>
+    </div>`;
+  }).join('');
+
+  // Total
+  document.getElementById('billTotal').innerHTML=`
+    <span>Annual total</span>
+    <span>${fmtPrice(total)}</span>`;
 }
 
 // ── MODAL ──
@@ -791,7 +1389,7 @@ function renderModalRows(){
       <span class="mrow-ic">${w.icon}</span>
       <div class="mrow-body">
         <div class="mrow-name">${w.name}</div>
-        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+        <div class="mrow-meta">${IMPACT[w.impact].label} · ${w.cat}</div>
       </div>
       <span class="mrow-pill ${!w.active?'show add':''}" id="mpill-${w.id}">${!w.active?'+adding':''}</span>
       <label class="m-tog" onclick="event.stopPropagation()">
@@ -805,7 +1403,7 @@ function renderModalRows(){
       <span class="mrow-ic">${w.icon}</span>
       <div class="mrow-body">
         <div class="mrow-name">${w.name}</div>
-        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+        <div class="mrow-meta">${IMPACT[w.impact].label} · ${w.cat}</div>
       </div>
       <span class="mrow-pill ${w.active?'show rem':''}" id="mpill-${w.id}">${w.active?'−removing':''}</span>
       <label class="m-tog" onclick="event.stopPropagation()">
@@ -834,12 +1432,12 @@ function draftTog(id){
 
 function updatePriceStrip(){
   const cur=committedTotal(), prev=draftTotal(), diff=prev-cur, changed=hasDraft();
-  document.getElementById('psCurrent').textContent=`£${cur}`;
-  document.getElementById('psNew').textContent=`£${prev}`;
+  document.getElementById('psCurrent').textContent=fmtPrice(cur);
+  document.getElementById('psNew').textContent=fmtPrice(prev);
   const d=document.getElementById('psDelta');
   if(!changed){d.textContent='No changes';d.className='ps-delta zero';}
-  else if(diff>0){d.textContent=`+£${diff}/mo`;d.className='ps-delta pos';}
-  else if(diff<0){d.textContent=`−£${Math.abs(diff)}/mo`;d.className='ps-delta neg';}
+  else if(diff>0){d.textContent=`+${fmtPrice(diff)}/yr`;d.className='ps-delta pos';}
+  else if(diff<0){d.textContent=`−${fmtPrice(Math.abs(diff))}/yr`;d.className='ps-delta neg';}
   else{d.textContent='Same total';d.className='ps-delta zero';}
   const adds=ALL.filter(w=>!w.active&&draft[w.id]).length;
   const rems=ALL.filter(w=>w.active&&!draft[w.id]).length;
@@ -854,6 +1452,14 @@ function confirmWorkflow(){
   ALL.forEach(w=>{ w.active=!!draft[w.id]; });
   closeModal(); renderWS(); renderBilling();
   showToast('Workflow updated');
+}
+
+// ── STORE TABS (Global / Custom) ──
+function switchStoreTab(name,btn){
+  document.querySelectorAll('.store-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.store-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById(`sp-${name}`).classList.add('on');
 }
 
 // ── TABS / NAV ──
@@ -871,7 +1477,7 @@ function switchPage(page,btn){
   document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('on'));
   btn.classList.add('on'); activatePage(page);
   const t={workspace:'My Widgets',billing:'Billing',team:'Team',settings:'Settings'};
-  document.getElementById('tbTitle').textContent=t[page]||'EWI Solutions';
+  document.getElementById('tbTitle').textContent=t[page]||'System Vault';
 }
 function activatePage(p){
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
@@ -897,7 +1503,159 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2600);
 }
 
-renderWS(); renderBilling();
+// ── TEAM ──
+const ACCESS_LEVELS = {
+  owner:  {label:'Owner',  icon:'🏛️', tag:'tag-owner',  desc:'Full control — billing, apps, team, settings. Only one owner.'},
+  admin:  {label:'Admin',  icon:'🔑', tag:'tag-admin',  desc:'Can manage members and has admin rights within assigned apps.'},
+  member: {label:'Member', icon:'👤', tag:'tag-member', desc:'Can only open and use the apps assigned to them.'},
+};
+
+const TEAM = [
+  {id:'t1', name:'You', role:'Account Owner', access:'owner', pin:'000000', apps:ALL.map(w=>w.id)},
+  {id:'t2', name:'Dave Wilson', role:'Site Supervisor', access:'admin', pin:'482916', apps:['opinion-ape','pulse-check','lrl-fleet']},
+  {id:'t3', name:'Sarah Jenkins', role:'Office Manager', access:'member', pin:'739204', apps:['opinion-ape','pulse-check','desk-flow','onboard-ez']},
+  {id:'t4', name:'Mike Taylor', role:'Driver', access:'member', pin:'156738', apps:['lrl-fleet']},
+  {id:'t5', name:'Lisa Chen', role:'HR Lead', access:'member', pin:'623481', apps:['opinion-ape','pulse-check','onboard-ez']},
+  {id:'t6', name:'Tom Bradley', role:'Driver', access:'member', pin:'891245', apps:['lrl-fleet']},
+];
+
+let editingMemberId = null;
+
+function generatePin(){
+  return String(Math.floor(100000+Math.random()*900000));
+}
+
+function getInitials(name){
+  const parts=name.replace(/\(.*\)/,'').trim().split(' ');
+  return parts.length>=2 ? (parts[0][0]+parts[parts.length-1][0]).toUpperCase() : parts[0].slice(0,2).toUpperCase();
+}
+
+function renderTeam(){
+  const owners=TEAM.filter(m=>m.access==='owner');
+  const admins=TEAM.filter(m=>m.access==='admin');
+  const members=TEAM.filter(m=>m.access==='member');
+  document.getElementById('tsTotal').textContent=TEAM.length;
+  document.getElementById('tsAdmin').textContent=owners.length+admins.length;
+  document.getElementById('tsActive').textContent=TEAM.length;
+
+  // Sort: owner first, then admins, then members
+  const sorted=[...owners,...admins,...members];
+
+  document.getElementById('teamList').innerHTML=sorted.map(m=>{
+    const lvl=ACCESS_LEVELS[m.access];
+    const appIcons=m.apps.slice(0,4).map(aid=>{
+      const w=ALL.find(x=>x.id===aid);
+      return w?`<div class="team-app-dot" title="${w.name}">${w.icon}</div>`:'';
+    }).join('');
+    const moreCount=m.apps.length>4?m.apps.length-4:0;
+    const isOwner=m.access==='owner';
+    const avClass=isOwner?'owner-av':m.access==='admin'?'admin-av':'';
+    return `
+    <div class="team-row" onclick="${isOwner?'':`openManageAccess('${m.id}')`}" style="${isOwner?'cursor:default':''}">
+      <div class="team-row-av ${avClass}">${getInitials(m.name)}</div>
+      <div class="team-row-body">
+        <div class="team-row-name">${m.name}${isOwner?' <span style="font-size:10px;color:var(--ink-4);font-weight:400">(you)</span>':''}</div>
+        <div class="team-row-meta">
+          <span>${m.role}</span>
+          <span class="team-row-role-tag ${lvl.tag}">${lvl.icon} ${lvl.label}</span>
+        </div>
+      </div>
+      <div class="team-row-apps">
+        ${appIcons}
+        ${moreCount?`<div class="team-app-more">+${moreCount}</div>`:''}
+      </div>
+      ${isOwner?'':'<div class="team-row-arrow">›</div>'}
+    </div>`;
+  }).join('');
+}
+
+function renderAppToggles(containerId, selectedApps){
+  const activeApps=ALL.filter(w=>w.active);
+  document.getElementById(containerId).innerHTML=activeApps.map(w=>{
+    const checked=selectedApps.includes(w.id);
+    return `
+    <div class="tm-app-row ${checked?'assigned':''}">
+      <span class="tm-app-icon">${w.icon}</span>
+      <span class="tm-app-name">${w.name}</span>
+      <label class="tm-app-tog">
+        <input type="checkbox" value="${w.id}" ${checked?'checked':''} onchange="this.closest('.tm-app-row').classList.toggle('assigned',this.checked)">
+        <div class="tog-track"></div>
+        <div class="tog-thumb"></div>
+      </label>
+    </div>`;
+  }).join('');
+}
+
+// Add member modal
+function openAddMember(){
+  document.getElementById('amName').value='';
+  document.getElementById('amRole').value='';
+  const radios=document.querySelectorAll('input[name="amAccess"]');
+  radios.forEach(r=>{r.checked=r.value==='member';});
+  renderAppToggles('amAppList',[]);
+  document.getElementById('addMemberOverlay').classList.add('open');
+}
+function closeAddMember(){document.getElementById('addMemberOverlay').classList.remove('open')}
+
+function confirmAddMember(){
+  const name=document.getElementById('amName').value.trim();
+  const role=document.getElementById('amRole').value.trim();
+  if(!name){showToast('Enter a name');return;}
+  const access=document.querySelector('input[name="amAccess"]:checked').value;
+  const apps=[...document.querySelectorAll('#amAppList input:checked')].map(i=>i.value);
+  const pin=generatePin();
+  const id='t'+Date.now();
+  TEAM.push({id,name,role:role||'Team Member',access,pin,apps});
+  closeAddMember();
+  renderTeam();
+
+  // Show PIN
+  document.getElementById('pinMemberName').textContent=name;
+  document.getElementById('pinDisplay').textContent=pin;
+  document.getElementById('pinOverlay').classList.add('open');
+  showToast(`${name} added to team`);
+}
+function closePinReveal(){document.getElementById('pinOverlay').classList.remove('open')}
+
+// Manage access modal
+function openManageAccess(id){
+  const m=TEAM.find(x=>x.id===id);
+  if(!m||m.access==='owner')return;
+  editingMemberId=id;
+  const lvl=ACCESS_LEVELS[m.access];
+  document.getElementById('maTitle').textContent=m.name;
+  document.getElementById('maSub').textContent=`${m.role} · ${lvl.icon} ${lvl.label}`;
+  document.getElementById('maPin').textContent=m.pin;
+  // Set access level radio
+  const radios=document.querySelectorAll('input[name="maAccess"]');
+  radios.forEach(r=>{r.checked=r.value===m.access;});
+  renderAppToggles('maAppList',m.apps);
+  document.getElementById('manageOverlay').classList.add('open');
+}
+function closeManageAccess(){document.getElementById('manageOverlay').classList.remove('open');editingMemberId=null}
+
+function saveManageAccess(){
+  const m=TEAM.find(x=>x.id===editingMemberId);
+  if(!m)return;
+  m.apps=[...document.querySelectorAll('#maAppList input:checked')].map(i=>i.value);
+  const newAccess=document.querySelector('input[name="maAccess"]:checked');
+  if(newAccess) m.access=newAccess.value;
+  closeManageAccess();
+  renderTeam();
+  showToast(`${m.name}'s access updated`);
+}
+
+function removeMember(){
+  const m=TEAM.find(x=>x.id===editingMemberId);
+  if(!m)return;
+  const idx=TEAM.indexOf(m);
+  if(idx>-1)TEAM.splice(idx,1);
+  closeManageAccess();
+  renderTeam();
+  showToast(`${m.name} removed from team`);
+}
+
+renderWS(); renderBilling(); renderTeam();
 </script>
 </body>
 </html>
