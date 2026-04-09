@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EWI Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  /* Brand greens — used sparingly */
+  --green:#4a7c2f;
+  --green-lt:#f0f5eb;
+  --green-mid:#639922;
+  --green-dim:#d6e8c4;
+
+  /* Neutral palette — dominates the UI */
+  --ink:#111210;
+  --ink-2:#3a3c38;
+  --ink-3:#6b6e66;
+  --ink-4:#9a9d94;
+  --rule:#e4e6e0;
+  --rule-lt:#f0f2ed;
+  --surface:#f7f8f5;
+  --white:#ffffff;
+
+  --sb-w:224px;
+  --top-h:56px;
+  --ease:cubic-bezier(.4,0,.2,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+  --font:'DM Sans',sans-serif;
+  --mono:'DM Mono',monospace
+}
+
+html,body{height:100%;font-family:var(--font);background:var(--surface);color:var(--ink);overflow:hidden;-webkit-font-smoothing:antialiased}
+
+/* ─────────────────────────────────────
+   LAYOUT
+───────────────────────────────────── */
+.shell{display:flex;height:100vh;overflow:hidden}
+
+/* ─────────────────────────────────────
+   SIDEBAR
+───────────────────────────────────── */
+.sb{
+  width:var(--sb-w);
+  height:100%;
+  flex-shrink:0;
+  background:var(--ink);
+  display:flex;
+  flex-direction:column;
+  position:relative;
+  /* The key fix: transition width, not transform */
+  transition:width .3s var(--ease);
+  overflow:visible; /* allow handle to peek out */
+  z-index:20;
+}
+/* when collapsed, shrink to zero and hide contents */
+.sb.collapsed{width:0}
+.sb.collapsed .sb-inner{opacity:0;pointer-events:none}
+
+.sb-inner{
+  width:var(--sb-w); /* always full width — clips inside .sb */
+  height:100%;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+  transition:opacity .2s var(--ease);
+}
+
+/* logo strip */
+.sb-logo{
+  padding:22px 20px 18px;
+  border-bottom:1px solid rgba(255,255,255,.07);
+  display:flex;align-items:center;gap:11px;
+  flex-shrink:0;white-space:nowrap
+}
+.sb-logo-mark{
+  width:30px;height:30px;border-radius:7px;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0
+}
+.sb-logo-mark svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round}
+.sb-wordmark{font-size:13px;font-weight:600;color:var(--white);letter-spacing:.1px}
+.sb-tagline{font-size:9.5px;font-weight:400;color:rgba(255,255,255,.35);letter-spacing:.8px;text-transform:uppercase;margin-top:1px}
+
+/* nav */
+.sb-nav{flex:1;padding:8px 0;overflow:hidden}
+.sb-group-label{
+  font-size:9px;font-weight:500;color:rgba(255,255,255,.25);
+  letter-spacing:1.4px;text-transform:uppercase;
+  padding:16px 20px 5px;white-space:nowrap
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:8px 20px;font-size:12.5px;font-weight:400;
+  color:rgba(255,255,255,.5);cursor:pointer;
+  white-space:nowrap;
+  border-left:2px solid transparent;
+  transition:color .15s,background .15s,border-color .15s
+}
+.nav-item:hover{color:rgba(255,255,255,.85);background:rgba(255,255,255,.04)}
+.nav-item.on{color:var(--white);border-left-color:var(--green-mid);background:rgba(255,255,255,.06)}
+.nav-item svg{width:14px;height:14px;flex-shrink:0;opacity:.6;transition:opacity .15s}
+.nav-item.on svg,.nav-item:hover svg{opacity:1}
+
+/* company footer */
+.sb-foot{
+  padding:14px 16px;border-top:1px solid rgba(255,255,255,.07);flex-shrink:0
+}
+.co-block{
+  display:flex;align-items:center;gap:9px;padding:9px 10px;
+  border-radius:8px;background:rgba(255,255,255,.05);
+  cursor:pointer;transition:background .15s;white-space:nowrap
+}
+.co-block:hover{background:rgba(255,255,255,.09)}
+.co-av{
+  width:28px;height:28px;border-radius:6px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:var(--white);flex-shrink:0;letter-spacing:.5px
+}
+.co-name{font-size:11.5px;font-weight:500;color:var(--white)}
+.co-plan{font-size:9.5px;font-weight:400;color:rgba(255,255,255,.35)}
+
+/* ─────────────────────────────────────
+   PULL HANDLE — fixed to sidebar right edge
+───────────────────────────────────── */
+.pull-handle{
+  position:absolute;
+  right:-12px;
+  top:50%;
+  transform:translateY(-50%);
+  width:12px;height:44px;
+  background:var(--ink);
+  border-radius:0 6px 6px 0;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;
+  box-shadow:3px 0 12px rgba(0,0,0,.22);
+  z-index:40;
+  transition:background .15s;
+  flex-shrink:0
+}
+.pull-handle:hover{background:#222420}
+.pull-handle svg{
+  width:8px;height:8px;
+  fill:none;stroke:rgba(255,255,255,.5);stroke-width:2;
+  stroke-linecap:round;stroke-linejoin:round;
+  transition:transform .3s var(--ease)
+}
+.sb.collapsed .pull-handle svg{transform:rotate(180deg)}
+
+/* ─────────────────────────────────────
+   MAIN CONTENT
+───────────────────────────────────── */
+.main{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  min-width:0;
+  overflow:hidden;
+  /* smooth reflow when sidebar collapses */
+  transition:margin-left .3s var(--ease)
+}
+
+/* ─────────────────────────────────────
+   TOPBAR
+───────────────────────────────────── */
+.topbar{
+  height:var(--top-h);
+  background:var(--white);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;
+  padding:0 28px;gap:16px;
+  flex-shrink:0;z-index:10
+}
+.tb-title{
+  font-size:14px;font-weight:500;color:var(--ink);
+  flex:1;letter-spacing:-.1px
+}
+.tb-actions{display:flex;align-items:center;gap:8px}
+.tb-icon{
+  width:32px;height:32px;border-radius:7px;
+  border:1px solid var(--rule);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;transition:background .15s,border-color .15s
+}
+.tb-icon:hover{background:var(--surface);border-color:var(--rule)}
+.tb-icon svg{width:15px;height:15px;stroke:var(--ink-3);fill:none;stroke-width:1.7;stroke-linecap:round}
+.tb-av{
+  width:30px;height:30px;border-radius:50%;
+  background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:var(--white);cursor:pointer;letter-spacing:.3px
+}
+.workflow-btn{
+  display:flex;align-items:center;gap:7px;
+  padding:7px 16px;border-radius:7px;
+  background:var(--ink);color:var(--white);
+  font-family:var(--font);font-size:12.5px;font-weight:500;
+  cursor:pointer;border:none;letter-spacing:.1px;
+  transition:background .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,.15)
+}
+.workflow-btn:hover{background:var(--ink-2)}
+.workflow-btn svg{width:13px;height:13px;stroke:rgba(255,255,255,.7);fill:none;stroke-width:1.8;stroke-linecap:round;flex-shrink:0}
+
+/* ─────────────────────────────────────
+   SUB-NAV TABS
+───────────────────────────────────── */
+.sub-nav{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:0 28px;display:flex;gap:0;flex-shrink:0
+}
+.sub-tab{
+  padding:11px 16px;font-size:12px;font-weight:400;
+  color:var(--ink-4);cursor:pointer;border:none;
+  background:transparent;font-family:var(--font);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .15s,border-color .15s;letter-spacing:.1px
+}
+.sub-tab:hover{color:var(--ink-2)}
+.sub-tab.on{color:var(--ink);border-bottom-color:var(--green-mid);font-weight:500}
+
+/* ─────────────────────────────────────
+   SCROLL AREA
+───────────────────────────────────── */
+.scroll{flex:1;overflow-y:auto;padding:32px 28px 64px}
+.scroll::-webkit-scrollbar{width:4px}
+.scroll::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
+.pg{display:none}.pg.on{display:block}
+
+/* ─────────────────────────────────────
+   INNER TABS (widget store/active)
+───────────────────────────────────── */
+.inner-tabs{
+  display:flex;gap:2px;margin-bottom:24px;
+  border-bottom:1px solid var(--rule);padding-bottom:0
+}
+.inner-tab{
+  padding:8px 16px;font-size:12px;font-weight:400;
+  color:var(--ink-4);cursor:pointer;border:none;
+  background:transparent;font-family:var(--font);
+  border-bottom:2px solid transparent;margin-bottom:-1px;
+  transition:color .15s,border-color .15s
+}
+.inner-tab:hover{color:var(--ink-2)}
+.inner-tab.on{color:var(--ink);border-bottom-color:var(--green-mid);font-weight:500}
+.w-panel{display:none}.w-panel.on{display:block}
+
+/* ─────────────────────────────────────
+   WIDGET GRID
+───────────────────────────────────── */
+.w-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(272px,1fr));
+  gap:14px
+}
+
+/* ─────────────────────────────────────
+   WIDGET CARD
+───────────────────────────────────── */
+.wc{
+  background:var(--white);
+  border:1px solid var(--rule);
+  border-radius:10px;padding:18px 20px;
+  position:relative;overflow:hidden;
+  transition:box-shadow .2s,border-color .2s,transform .18s
+}
+.wc:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);border-color:#cdd0c8;transform:translateY(-1px)}
+
+/* left accent — only a thin stripe, not a shout */
+.wc::before{
+  content:'';position:absolute;left:0;top:16px;bottom:16px;
+  width:2.5px;background:var(--green-mid);border-radius:2px;
+  opacity:0;transition:opacity .2s
+}
+.wc:hover::before{opacity:1}
+
+.wc.store-card{border-style:dashed;cursor:pointer;background:var(--surface)}
+.wc.store-card:hover{background:var(--white);border-style:solid;border-color:#cdd0c8}
+
+/* animations */
+.wc.fly-out{animation:flyOut .25s var(--ease) forwards}
+.wc.fly-in {animation:flyIn  .3s  var(--spring) both}
+@keyframes flyOut{0%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.95) translateY(-6px)}}
+@keyframes flyIn {0%{opacity:0;transform:scale(.96) translateY(6px)}100%{opacity:1;transform:scale(1)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+.wc-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px}
+.wc-icon{
+  width:36px;height:36px;border-radius:8px;
+  background:var(--green-lt);border:1px solid var(--green-dim);
+  display:flex;align-items:center;justify-content:center;font-size:17px
+}
+.wc-badge{
+  font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.2px
+}
+.badge-active{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+.badge-new{background:#fef9e7;color:#8a6800;border:1px solid #f0e0a0}
+.badge-cat{background:var(--rule-lt);color:var(--ink-3);border:1px solid var(--rule)}
+
+.wc-name{font-size:13.5px;font-weight:500;color:var(--ink);margin-bottom:4px;letter-spacing:-.1px}
+.wc-desc{font-size:12px;color:var(--ink-3);font-weight:400;line-height:1.55}
+.wc-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-lt)
+}
+.wc-price{font-size:12.5px;font-weight:500;color:var(--ink-2);font-family:var(--mono)}
+.wc-price small{font-size:10px;font-weight:400;color:var(--ink-4)}
+
+.wc-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:5px 12px;border-radius:6px;
+  font-family:var(--font);font-size:11.5px;font-weight:500;
+  cursor:pointer;border:none;transition:all .15s;letter-spacing:.1px
+}
+.btn-add{background:var(--ink);color:var(--white)}
+.btn-add:hover{background:var(--ink-2)}
+.btn-rem{background:var(--white);color:#c0392b;border:1px solid #f0d0d0}
+.btn-rem:hover{background:#fdf0f0}
+
+/* ─────────────────────────────────────
+   BILLING PAGE
+───────────────────────────────────── */
+.bill-wrap{max-width:520px}
+.bill-hero{
+  background:var(--ink);border-radius:12px;
+  padding:26px 28px;margin-bottom:16px;
+  display:flex;align-items:flex-end;justify-content:space-between
+}
+.bill-lbl{font-size:9px;font-weight:400;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.bill-amt{font-size:38px;font-weight:300;color:var(--white);line-height:1;letter-spacing:-1px;font-family:var(--font)}
+.bill-per{font-size:12px;font-weight:400;color:rgba(255,255,255,.4);margin-left:4px}
+.bill-next{font-size:10.5px;font-weight:400;color:rgba(255,255,255,.3);margin-top:6px}
+.bill-stat-v{font-size:22px;font-weight:300;color:var(--white);text-align:right;letter-spacing:-.5px}
+.bill-stat-l{font-size:9px;font-weight:400;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.8px;text-align:right}
+.bill-card{background:var(--white);border-radius:10px;border:1px solid var(--rule);overflow:hidden}
+.bill-row{
+  display:flex;align-items:center;padding:12px 20px;
+  border-bottom:1px solid var(--rule-lt);font-size:12.5px
+}
+.bill-row:last-child{border-bottom:none}
+.bill-row-ic{font-size:15px;margin-right:12px;opacity:.8}
+.bill-row-name{font-weight:400;color:var(--ink);flex:1}
+.bill-row-price{font-weight:500;color:var(--ink-2);font-family:var(--mono);font-size:12px}
+
+/* placeholder */
+.placeholder{text-align:center;padding:80px 20px;color:var(--ink-4);font-size:13px;font-weight:400}
+
+/* ─────────────────────────────────────
+   MODAL
+───────────────────────────────────── */
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.4);
+  backdrop-filter:blur(8px);
+  z-index:200;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .2s;padding:20px
+}
+.overlay.open{opacity:1;pointer-events:all}
+
+.modal{
+  background:var(--white);border-radius:14px;
+  width:100%;max-width:640px;max-height:86vh;
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.24);
+  transform:translateY(16px) scale(.98);
+  transition:transform .28s var(--spring)
+}
+.overlay.open .modal{transform:translateY(0) scale(1)}
+
+/* modal top bar */
+.modal-bar{
+  background:var(--ink);padding:20px 24px;flex-shrink:0
+}
+.modal-bar-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:16px}
+.modal-title{font-size:16px;font-weight:500;color:var(--white);letter-spacing:-.1px}
+.modal-sub{font-size:11px;font-weight:400;color:rgba(255,255,255,.35);margin-top:2px}
+.modal-x{
+  width:26px;height:26px;border-radius:6px;
+  background:rgba(255,255,255,.08);border:none;
+  color:rgba(255,255,255,.5);font-size:13px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  transition:background .15s;flex-shrink:0
+}
+.modal-x:hover{background:rgba(255,255,255,.15);color:var(--white)}
+
+/* live price strip */
+.price-strip{
+  display:flex;align-items:center;gap:12px;
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:8px;padding:10px 14px
+}
+.ps-label{font-size:9px;font-weight:400;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;margin-bottom:3px}
+.ps-current{font-size:12px;font-weight:400;color:rgba(255,255,255,.3);text-decoration:line-through;font-family:var(--mono)}
+.ps-new{font-size:20px;font-weight:300;color:var(--white);letter-spacing:-.5px;font-family:var(--font);transition:all .25s var(--spring)}
+.ps-per{font-size:10px;font-weight:400;color:rgba(255,255,255,.35);margin-left:2px}
+.ps-delta{
+  margin-left:auto;font-size:10.5px;font-weight:500;
+  padding:3px 9px;border-radius:4px;font-family:var(--mono);
+  transition:all .2s
+}
+.ps-delta.pos{background:rgba(220,80,80,.15);color:#ff9a9a}
+.ps-delta.neg{background:rgba(100,180,60,.15);color:#a0d87a}
+.ps-delta.zero{background:rgba(255,255,255,.06);color:rgba(255,255,255,.3)}
+
+/* modal body */
+.modal-body{overflow-y:auto;padding:20px 24px;flex:1}
+.modal-body::-webkit-scrollbar{width:3px}
+.modal-body::-webkit-scrollbar-thumb{background:var(--rule);border-radius:2px}
+
+.modal-section{font-size:9px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+
+/* modal widget rows */
+.mrow{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:8px;
+  border:1px solid var(--rule);margin-bottom:6px;
+  background:var(--white);cursor:pointer;
+  transition:border-color .15s,background .15s
+}
+.mrow:hover{border-color:#cdd0c8}
+.mrow.on{border-color:var(--green-mid);background:var(--green-lt)}
+.mrow.removing{border-color:#f0c0c0;background:#fff8f8}
+
+.mrow-ic{font-size:18px;flex-shrink:0}
+.mrow-body{flex:1;min-width:0}
+.mrow-name{font-size:12.5px;font-weight:500;color:var(--ink);letter-spacing:-.1px}
+.mrow-meta{font-size:11px;font-weight:400;color:var(--ink-4);margin-top:1px;font-family:var(--mono)}
+
+.mrow-pill{
+  font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:4px;
+  opacity:0;transition:opacity .18s;white-space:nowrap;font-family:var(--mono)
+}
+.mrow-pill.show{opacity:1}
+.mrow-pill.add{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+.mrow-pill.rem{background:#fdeaea;color:#c0392b;border:1px solid #f0d0d0}
+
+/* toggle */
+.m-tog{position:relative;width:36px;height:20px;flex-shrink:0}
+.m-tog input{opacity:0;width:0;height:0;position:absolute}
+.t-track{
+  position:absolute;inset:0;background:var(--rule);
+  border-radius:10px;transition:background .2s;cursor:pointer
+}
+.m-tog input:checked+.t-track{background:var(--green-mid)}
+.t-thumb{
+  position:absolute;top:2px;left:2px;
+  width:16px;height:16px;background:var(--white);
+  border-radius:50%;transition:transform .2s;
+  box-shadow:0 1px 3px rgba(0,0,0,.2);pointer-events:none
+}
+.m-tog input:checked~.t-thumb{transform:translateX(16px)}
+
+/* modal footer */
+.modal-foot{
+  padding:14px 24px;border-top:1px solid var(--rule);
+  display:flex;align-items:center;justify-content:space-between;flex-shrink:0
+}
+.mf-note{font-size:11px;font-weight:400;color:var(--ink-4)}
+.mf-note b{color:var(--ink-2);font-weight:500}
+.mf-btns{display:flex;gap:8px}
+.mf-cancel{
+  padding:8px 18px;border-radius:7px;
+  background:var(--surface);color:var(--ink-2);
+  font-family:var(--font);font-size:12px;font-weight:400;
+  border:1px solid var(--rule);cursor:pointer;transition:background .15s
+}
+.mf-cancel:hover{background:var(--rule-lt)}
+.mf-confirm{
+  padding:8px 22px;border-radius:7px;
+  background:var(--ink);color:var(--white);
+  font-family:var(--font);font-size:12px;font-weight:500;
+  border:none;cursor:pointer;transition:all .15s;
+  box-shadow:0 1px 4px rgba(0,0,0,.15)
+}
+.mf-confirm:hover{background:var(--ink-2)}
+.mf-confirm:disabled{background:var(--rule);color:var(--ink-4);box-shadow:none;cursor:default}
+
+/* ─────────────────────────────────────
+   TOAST
+───────────────────────────────────── */
+.toast{
+  position:fixed;bottom:24px;left:50%;
+  transform:translateX(-50%) translateY(60px);
+  background:var(--ink);color:var(--white);
+  padding:10px 20px;border-radius:8px;
+  font-size:12.5px;font-weight:400;
+  box-shadow:0 6px 24px rgba(0,0,0,.2);
+  transition:transform .3s var(--spring);
+  z-index:300;white-space:nowrap;pointer-events:none;
+  letter-spacing:.1px
+}
+.toast.show{transform:translateX(-50%) translateY(0)}
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- ── SIDEBAR ── -->
+  <aside class="sb" id="sb">
+    <div class="sb-inner">
+      <div class="sb-logo">
+        <div class="sb-logo-mark">
+          <!-- simple leaf/chevron mark -->
+          <svg viewBox="0 0 16 16"><path d="M3 13 C3 13 5 8 8 6 C11 4 14 5 14 5 C14 5 13 8 10 10 C7 12 3 13 3 13Z"/><path d="M3 13 L7 9"/></svg>
+        </div>
+        <div>
+          <div class="sb-wordmark">EWI Solutions</div>
+          <div class="sb-tagline">Workspace</div>
+        </div>
+      </div>
+
+      <nav class="sb-nav">
+        <div class="sb-group-label">Workspace</div>
+        <div class="nav-item on" onclick="setNav(this,'workspace')">
+          <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
+          My Widgets
+        </div>
+        <div class="nav-item" onclick="setNav(this,'billing')">
+          <svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="2"/><path d="M1 6h14"/><path d="M4 10h3"/></svg>
+          Billing
+        </div>
+        <div class="sb-group-label">Manage</div>
+        <div class="nav-item" onclick="setNav(this,'team')">
+          <svg viewBox="0 0 16 16"><circle cx="6" cy="5" r="2.5"/><path d="M1 13c0-2.8 2.2-4.5 5-4.5s5 1.7 5 4.5"/><circle cx="12" cy="5" r="2"/><path d="M14 13c0-1.8-1-3-2.5-3.5"/></svg>
+          Team
+        </div>
+        <div class="nav-item" onclick="setNav(this,'settings')">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="2.5"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.1 3.1l1.4 1.4M11.5 11.5l1.4 1.4M3.1 12.9l1.4-1.4M11.5 4.5l1.4-1.4"/></svg>
+          Settings
+        </div>
+        <div class="sb-group-label">Support</div>
+        <div class="nav-item" onclick="setNav(this,'custom')">
+          <svg viewBox="0 0 16 16"><path d="M8 1L10 5.5H15L11 8.5L12.5 13L8 10L3.5 13L5 8.5L1 5.5H6Z"/></svg>
+          Request Custom
+        </div>
+        <div class="nav-item" onclick="setNav(this,'help')">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7"/><path d="M6 6c0-1.1.9-2 2-2s2 .9 2 2c0 1.3-2 2-2 3"/><circle cx="8" cy="12" r=".7" fill="currentColor"/></svg>
+          Help &amp; Docs
+        </div>
+      </nav>
+
+      <div class="sb-foot">
+        <div class="co-block">
+          <div class="co-av">EW</div>
+          <div>
+            <div class="co-name">EWI Solutions</div>
+            <div class="co-plan">Growth Plan</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PULL HANDLE -->
+    <div class="pull-handle" onclick="toggleSb()">
+      <svg viewBox="0 0 8 12"><polyline points="6,1 2,6 6,11"/></svg>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ── -->
+  <div class="main" id="main">
+
+    <div class="topbar">
+      <span class="tb-title" id="tbTitle">My Widgets</span>
+      <div class="tb-actions">
+        <div class="tb-icon">
+          <svg viewBox="0 0 16 16"><path d="M8 1a4 4 0 014 4c0 3 1.5 4 1.5 4H2.5S4 8 4 5a4 4 0 014-4zM6.5 13a1.5 1.5 0 003 0"/></svg>
+        </div>
+        <button class="workflow-btn" onclick="openModal()">
+          <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="2"/><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.9 2.9l1.4 1.4M9.7 9.7l1.4 1.4M2.9 11.1l1.4-1.4M9.7 4.3l1.4-1.4"/></svg>
+          Alter my workflow
+        </button>
+        <div class="tb-av">EW</div>
+      </div>
+    </div>
+
+    <div class="sub-nav">
+      <button class="sub-tab on"  onclick="switchPage('workspace',this)">Workspace</button>
+      <button class="sub-tab"     onclick="switchPage('billing',this)">Billing</button>
+      <button class="sub-tab"     onclick="switchPage('team',this)">Team</button>
+      <button class="sub-tab"     onclick="switchPage('settings',this)">Settings</button>
+    </div>
+
+    <div class="scroll">
+
+      <!-- WORKSPACE -->
+      <div class="pg on" id="pg-workspace">
+        <div class="inner-tabs">
+          <button class="inner-tab on" onclick="switchWTab('active',this)">Active widgets</button>
+          <button class="inner-tab"    onclick="switchWTab('store',this)">Widget store</button>
+        </div>
+        <div class="w-panel on" id="wp-active">
+          <div class="w-grid" id="activeGrid"></div>
+        </div>
+        <div class="w-panel" id="wp-store">
+          <div class="w-grid" id="storeGrid"></div>
+        </div>
+      </div>
+
+      <!-- BILLING -->
+      <div class="pg" id="pg-billing">
+        <div class="bill-wrap">
+          <div class="bill-hero">
+            <div>
+              <div class="bill-lbl">Monthly total</div>
+              <div><span class="bill-amt" id="billAmt">£89</span><span class="bill-per">/mo</span></div>
+              <div class="bill-next">Next billing: 1 Apr 2026</div>
+            </div>
+            <div>
+              <div class="bill-stat-v" id="billCount">4</div>
+              <div class="bill-stat-l">Active</div>
+            </div>
+          </div>
+          <div class="bill-card" id="billRows"></div>
+        </div>
+      </div>
+
+      <div class="pg" id="pg-team"><div class="placeholder">Team management — coming soon</div></div>
+      <div class="pg" id="pg-settings"><div class="placeholder">Settings — coming soon</div></div>
+      <div class="pg" id="pg-custom"><div class="placeholder">Custom widget requests — coming soon</div></div>
+      <div class="pg" id="pg-help"><div class="placeholder">Help &amp; docs — coming soon</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── MODAL ── -->
+<div class="overlay" id="overlay" onclick="bgClose(event)">
+  <div class="modal">
+    <div class="modal-bar">
+      <div class="modal-bar-top">
+        <div>
+          <div class="modal-title">Alter my workflow</div>
+          <div class="modal-sub">Toggle widgets on or off — your dashboard updates on confirm</div>
+        </div>
+        <button class="modal-x" onclick="closeModal()">✕</button>
+      </div>
+      <div class="price-strip">
+        <div>
+          <div class="ps-label">Monthly total</div>
+          <div style="display:flex;align-items:baseline;gap:8px">
+            <span class="ps-current" id="psCurrent">£89</span>
+            <span style="font-size:10px;color:rgba(255,255,255,.25)">→</span>
+            <span class="ps-new" id="psNew">£89</span>
+            <span class="ps-per">/mo</span>
+          </div>
+        </div>
+        <div class="ps-delta zero" id="psDelta">No changes</div>
+      </div>
+    </div>
+
+    <div class="modal-body">
+      <div class="modal-section" id="mlActive" style="display:none">Active</div>
+      <div id="mActiveList"></div>
+      <div class="modal-section" id="mlStore" style="display:none;margin-top:14px">Available</div>
+      <div id="mStoreList"></div>
+    </div>
+
+    <div class="modal-foot">
+      <div class="mf-note" id="mfNote">No changes yet</div>
+      <div class="mf-btns">
+        <button class="mf-cancel" onclick="closeModal()">Cancel</button>
+        <button class="mf-confirm" id="mfConfirm" onclick="confirmWorkflow()" disabled>Apply changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const ALL = [
+  {id:'opinion-ape', name:'Opinion Ape',  icon:'🐒', cat:'People',     price:29, active:true,  isNew:false, desc:'Employee suggestions, voting and manager responses — all in one place.'},
+  {id:'pulse-check', name:'Pulse Check',  icon:'📊', cat:'People',     price:19, active:true,  isNew:false, desc:'Automated weekly morale surveys with trend tracking over time.'},
+  {id:'desk-flow',   name:'Desk Flow',    icon:'🗓️', cat:'Facilities', price:24, active:true,  isNew:false, desc:'Hot desk and meeting room booking — claimed in seconds from any device.'},
+  {id:'onboard-ez',  name:'OnboardEZ',   icon:'🚀', cat:'HR',         price:17, active:true,  isNew:false, desc:'Structured onboarding checklists for new starters, tracked end-to-end.'},
+  {id:'shiftwise',   name:'ShiftWise',   icon:'🕐', cat:'Operations', price:22, active:false, isNew:false, desc:'Shift scheduling and absence logging with one-tap manager approvals.'},
+  {id:'doc-vault',   name:'Doc Vault',   icon:'📁', cat:'Compliance', price:15, active:false, isNew:false, desc:'Central searchable document library — policies and SOPs always current.'},
+  {id:'kudos',       name:'Kudos Board', icon:'⭐', cat:'Culture',    price:12, active:false, isNew:true,  desc:'Peer recognition that surfaces to a weekly company highlight digest.'},
+  {id:'incident-log',name:'Incident Log',icon:'🛡️', cat:'Compliance', price:18, active:false, isNew:false, desc:'Fully auditable workplace incident logging with required-field guidance.'},
+  {id:'quick-poll',  name:'Quick Poll',  icon:'🗳️', cat:'Comms',      price:9,  active:false, isNew:true,  desc:'Fire instant polls to the whole company or a specific team in seconds.'},
+];
+
+let draft = {};
+
+const committedTotal = () => ALL.reduce((s,w)=>w.active?s+w.price:s,0);
+const draftTotal     = () => ALL.reduce((s,w)=>draft[w.id]?s+w.price:s,0);
+const hasDraft       = () => ALL.some(w=>draft[w.id]!==w.active);
+
+// ── WORKSPACE ──
+function renderWS(){
+  const active = ALL.filter(w=>w.active);
+  const store  = ALL.filter(w=>!w.active);
+
+  document.getElementById('activeGrid').innerHTML = active.length
+    ? active.map((w,i)=>`
+      <div class="wc" id="wc-${w.id}" style="animation:fadeUp .28s ${i*.04}s var(--ease) both">
+        <div class="wc-header">
+          <div class="wc-icon">${w.icon}</div>
+          <span class="wc-badge badge-active">Active</span>
+        </div>
+        <div class="wc-name">${w.name}</div>
+        <div class="wc-desc">${w.desc}</div>
+        <div class="wc-foot">
+          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <button class="wc-btn btn-rem" onclick="quickRemove('${w.id}')">Remove</button>
+        </div>
+      </div>`).join('')
+    : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">
+        No active widgets — open the Widget Store tab to add some.
+       </div>`;
+
+  document.getElementById('storeGrid').innerHTML = store.length
+    ? store.map((w,i)=>`
+      <div class="wc store-card" id="wcs-${w.id}" style="animation:fadeUp .28s ${i*.04}s var(--ease) both" onclick="quickAdd('${w.id}')">
+        <div class="wc-header">
+          <div class="wc-icon">${w.icon}</div>
+          <span class="wc-badge ${w.isNew?'badge-new':'badge-cat'}">${w.isNew?'New':w.cat}</span>
+        </div>
+        <div class="wc-name">${w.name}</div>
+        <div class="wc-desc">${w.desc}</div>
+        <div class="wc-foot">
+          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <button class="wc-btn btn-add" onclick="event.stopPropagation();quickAdd('${w.id}')">+ Add</button>
+        </div>
+      </div>`).join('')
+    : `<div style="color:var(--ink-4);font-size:13px;padding:32px 0;text-align:center;grid-column:1/-1">All widgets are active.</div>`;
+}
+
+function quickAdd(id){
+  const el=document.getElementById(`wcs-${id}`);
+  if(el) el.classList.add('fly-out');
+  setTimeout(()=>{
+    ALL.find(x=>x.id===id).active=true;
+    renderWS(); renderBilling();
+    switchWTab('active',document.querySelectorAll('.inner-tab')[0]);
+    setTimeout(()=>{
+      const n=document.getElementById(`wc-${id}`);
+      if(n){n.style.animation='none';void n.offsetWidth;n.classList.add('fly-in');}
+    },20);
+    showToast(`${ALL.find(x=>x.id===id).name} added`);
+  },230);
+}
+
+function quickRemove(id){
+  const el=document.getElementById(`wc-${id}`);
+  if(el) el.classList.add('fly-out');
+  setTimeout(()=>{
+    const w=ALL.find(x=>x.id===id);
+    w.active=false;
+    renderWS(); renderBilling();
+    showToast(`${w.name} removed`);
+  },230);
+}
+
+// ── BILLING ──
+function renderBilling(){
+  const active=ALL.filter(w=>w.active);
+  const total=committedTotal();
+  document.getElementById('billAmt').textContent=`£${total}`;
+  document.getElementById('billCount').textContent=active.length;
+  document.getElementById('billRows').innerHTML=active.map(w=>`
+    <div class="bill-row">
+      <span class="bill-row-ic">${w.icon}</span>
+      <span class="bill-row-name">${w.name}</span>
+      <span class="bill-row-price">£${w.price}/mo</span>
+    </div>`).join('');
+}
+
+// ── MODAL ──
+function openModal(){
+  ALL.forEach(w=>{ draft[w.id]=w.active; });
+  renderModalRows();
+  updatePriceStrip();
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+function bgClose(e){ if(e.target===document.getElementById('overlay')) closeModal(); }
+
+function renderModalRows(){
+  const active=ALL.filter(w=>draft[w.id]);
+  const avail =ALL.filter(w=>!draft[w.id]);
+  document.getElementById('mlActive').style.display=active.length?'block':'none';
+  document.getElementById('mlStore').style.display=avail.length?'block':'none';
+
+  document.getElementById('mActiveList').innerHTML=active.map(w=>`
+    <div class="mrow on" id="mrow-${w.id}" onclick="draftTog('${w.id}')">
+      <span class="mrow-ic">${w.icon}</span>
+      <div class="mrow-body">
+        <div class="mrow-name">${w.name}</div>
+        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+      </div>
+      <span class="mrow-pill ${!w.active?'show add':''}" id="mpill-${w.id}">${!w.active?'+adding':''}</span>
+      <label class="m-tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="mtog-${w.id}" checked onchange="draftTog('${w.id}')">
+        <div class="t-track"></div><div class="t-thumb"></div>
+      </label>
+    </div>`).join('');
+
+  document.getElementById('mStoreList').innerHTML=avail.map(w=>`
+    <div class="mrow" id="mrow-${w.id}" onclick="draftTog('${w.id}')">
+      <span class="mrow-ic">${w.icon}</span>
+      <div class="mrow-body">
+        <div class="mrow-name">${w.name}</div>
+        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+      </div>
+      <span class="mrow-pill ${w.active?'show rem':''}" id="mpill-${w.id}">${w.active?'−removing':''}</span>
+      <label class="m-tog" onclick="event.stopPropagation()">
+        <input type="checkbox" id="mtog-${w.id}" onchange="draftTog('${w.id}')">
+        <div class="t-track"></div><div class="t-thumb"></div>
+      </label>
+    </div>`).join('');
+}
+
+function draftTog(id){
+  draft[id]=!draft[id];
+  const w=ALL.find(x=>x.id===id);
+  const row=document.getElementById(`mrow-${id}`);
+  const inp=document.getElementById(`mtog-${id}`);
+  const pill=document.getElementById(`mpill-${id}`);
+  if(inp) inp.checked=draft[id];
+  if(draft[id]){
+    row.classList.add('on');row.classList.remove('removing');
+    if(pill){pill.textContent=!w.active?'+adding':'';pill.className=`mrow-pill ${!w.active?'show add':''}`;}
+  } else {
+    row.classList.remove('on');row.classList.add('removing');
+    if(pill){pill.textContent=w.active?'−removing':'';pill.className=`mrow-pill ${w.active?'show rem':''}`;}
+  }
+  updatePriceStrip();
+}
+
+function updatePriceStrip(){
+  const cur=committedTotal(), prev=draftTotal(), diff=prev-cur, changed=hasDraft();
+  document.getElementById('psCurrent').textContent=`£${cur}`;
+  document.getElementById('psNew').textContent=`£${prev}`;
+  const d=document.getElementById('psDelta');
+  if(!changed){d.textContent='No changes';d.className='ps-delta zero';}
+  else if(diff>0){d.textContent=`+£${diff}/mo`;d.className='ps-delta pos';}
+  else if(diff<0){d.textContent=`−£${Math.abs(diff)}/mo`;d.className='ps-delta neg';}
+  else{d.textContent='Same total';d.className='ps-delta zero';}
+  const adds=ALL.filter(w=>!w.active&&draft[w.id]).length;
+  const rems=ALL.filter(w=>w.active&&!draft[w.id]).length;
+  let parts=[];
+  if(adds) parts.push(`+${adds} widget${adds>1?'s':''}`);
+  if(rems) parts.push(`−${rems} widget${rems>1?'s':''}`);
+  document.getElementById('mfNote').innerHTML=changed?`Pending: <b>${parts.join(', ')}</b>`:'No changes yet';
+  document.getElementById('mfConfirm').disabled=!changed;
+}
+
+function confirmWorkflow(){
+  ALL.forEach(w=>{ w.active=!!draft[w.id]; });
+  closeModal(); renderWS(); renderBilling();
+  showToast('Workflow updated');
+}
+
+// ── TABS / NAV ──
+function switchWTab(name,btn){
+  document.querySelectorAll('.inner-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.w-panel').forEach(p=>p.classList.remove('on'));
+  document.getElementById(`wp-${name}`).classList.add('on');
+}
+function setNav(el,page){
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('on'));
+  el.classList.add('on'); activatePage(page);
+}
+function switchPage(page,btn){
+  document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('on'));
+  btn.classList.add('on'); activatePage(page);
+  const t={workspace:'My Widgets',billing:'Billing',team:'Team',settings:'Settings'};
+  document.getElementById('tbTitle').textContent=t[page]||'EWI Solutions';
+}
+function activatePage(p){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.getElementById(`pg-${p}`)?.classList.add('on');
+  if(p==='billing') renderBilling();
+}
+
+// ── SIDEBAR FIX ──
+// The sidebar itself animates width. The main content
+// simply fills the remaining flex space — no JS needed.
+function toggleSb(){
+  const sb=document.getElementById('sb');
+  const collapsed=sb.classList.toggle('collapsed');
+  // flip the arrow
+  const arrow=sb.querySelector('.pull-handle svg');
+  if(arrow) arrow.style.transform=collapsed?'rotate(180deg)':'rotate(0deg)';
+}
+
+// ── TOAST ──
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2600);
+}
+
+renderWS(); renderBilling();
+</script>
+</body>
+</html>
