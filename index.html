@@ -495,10 +495,783 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
   letter-spacing:.1px
 }
 .toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ─────────────────────────────────────
+   AUTH / LOGIN
+───────────────────────────────────── */
+.auth-overlay{
+  position:fixed;inset:0;
+  background:linear-gradient(160deg,#1a1c18 0%,#0a0b09 100%);
+  z-index:500;display:none;
+  align-items:center;justify-content:center;
+  padding:24px;overflow-y:auto
+}
+.auth-overlay.open{display:flex}
+.auth-card{
+  background:var(--white);border-radius:14px;
+  width:100%;max-width:440px;
+  box-shadow:0 32px 80px rgba(0,0,0,.4);
+  overflow:hidden
+}
+.auth-head{padding:30px 32px 22px;text-align:center;border-bottom:1px solid var(--rule-lt)}
+.auth-mark{
+  width:48px;height:48px;border-radius:11px;background:var(--green);
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:14px
+}
+.auth-mark svg{width:26px;height:26px;fill:none;stroke:#fff;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.auth-title{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.2px}
+.auth-sub{font-size:12px;color:var(--ink-3);margin-top:4px;font-weight:400}
+.auth-body{padding:18px 22px 22px}
+.auth-section-l{font-size:9px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;margin:6px 4px 10px}
+.auth-acct{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 14px;border-radius:9px;
+  border:1px solid var(--rule);background:var(--white);
+  cursor:pointer;margin-bottom:7px;
+  transition:border-color .15s,background .15s,transform .12s
+}
+.auth-acct:hover{border-color:var(--green-mid);background:var(--green-lt);transform:translateY(-1px)}
+.auth-av{
+  width:34px;height:34px;border-radius:8px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;letter-spacing:.4px
+}
+.auth-acct-body{flex:1;min-width:0;text-align:left}
+.auth-acct-name{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:-.1px}
+.auth-acct-email{font-size:11px;color:var(--ink-4);font-family:var(--mono);margin-top:1px}
+.auth-acct-role{
+  font-size:9.5px;font-weight:500;padding:3px 9px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.2px;flex-shrink:0
+}
+.role-admin{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+.role-staff{background:var(--rule-lt);color:var(--ink-3);border:1px solid var(--rule)}
+.auth-divider{
+  display:flex;align-items:center;gap:10px;
+  color:var(--ink-4);font-size:9.5px;letter-spacing:1.2px;text-transform:uppercase;
+  margin:18px 4px 12px;font-weight:500
+}
+.auth-divider::before,.auth-divider::after{
+  content:'';flex:1;height:1px;background:var(--rule)
+}
+.auth-key-row{display:flex;gap:8px}
+.auth-key-row input{
+  flex:1;padding:9px 12px;border:1px solid var(--rule);
+  border-radius:7px;font-family:var(--mono);font-size:11.5px;
+  color:var(--ink);background:var(--white);outline:none;
+  transition:border-color .15s;min-width:0
+}
+.auth-key-row input:focus{border-color:var(--green-mid)}
+.auth-key-btn{
+  padding:9px 16px;border-radius:7px;background:var(--ink);color:#fff;
+  font-family:var(--font);font-size:12px;font-weight:500;
+  border:none;cursor:pointer;transition:background .15s;flex-shrink:0
+}
+.auth-key-btn:hover{background:var(--ink-2)}
+.auth-foot{
+  padding:12px 22px;background:var(--surface);
+  border-top:1px solid var(--rule-lt);
+  font-size:10.5px;color:var(--ink-4);text-align:center;font-weight:400;
+  font-family:var(--mono)
+}
+
+/* ─────────────────────────────────────
+   USER MENU (topbar)
+───────────────────────────────────── */
+.user-menu{position:relative}
+.user-menu-trigger{
+  display:flex;align-items:center;gap:9px;
+  padding:3px 11px 3px 3px;border-radius:18px;
+  background:var(--surface);border:1px solid var(--rule);
+  cursor:pointer;transition:background .15s,border-color .15s
+}
+.user-menu-trigger:hover{background:var(--rule-lt);border-color:#cdd0c8}
+.user-menu-av{
+  width:26px;height:26px;border-radius:50%;background:var(--green);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10.5px;font-weight:600;color:#fff;letter-spacing:.3px
+}
+.user-menu-name{font-size:11.5px;font-weight:500;color:var(--ink-2);letter-spacing:.1px}
+.user-menu-pop{
+  position:absolute;top:calc(100% + 6px);right:0;
+  background:var(--white);border:1px solid var(--rule);
+  border-radius:10px;width:230px;
+  box-shadow:0 12px 32px rgba(0,0,0,.12);
+  padding:8px;display:none;z-index:50
+}
+.user-menu-pop.open{display:block}
+.umh{padding:10px 12px;border-bottom:1px solid var(--rule-lt);margin-bottom:6px}
+.umh-name{font-size:12.5px;font-weight:500;color:var(--ink)}
+.umh-email{font-size:10.5px;color:var(--ink-4);font-family:var(--mono);margin-top:2px}
+.umh-role{
+  font-size:9px;font-weight:500;padding:2px 7px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.3px;display:inline-block;margin-top:7px
+}
+.um-item{
+  display:flex;align-items:center;gap:9px;
+  padding:8px 12px;border-radius:6px;font-size:12px;color:var(--ink-2);
+  cursor:pointer;transition:background .15s
+}
+.um-item:hover{background:var(--surface)}
+.um-item svg{width:13px;height:13px;stroke:var(--ink-3);fill:none;stroke-width:1.7;stroke-linecap:round}
+
+/* ─────────────────────────────────────
+   LAUNCHER VIEW (non-admin users)
+───────────────────────────────────── */
+.lauv{display:none;height:100vh;overflow-y:auto;background:var(--surface)}
+.lau-top{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:13px 32px;display:flex;align-items:center;gap:14px;
+  position:sticky;top:0;z-index:10
+}
+.lau-mark{
+  width:32px;height:32px;border-radius:7px;background:var(--green);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0
+}
+.lau-mark svg{width:18px;height:18px;fill:none;stroke:#fff;stroke-width:1.5;stroke-linejoin:round}
+.lau-brand{flex:1}
+.lau-brand-name{font-size:13px;font-weight:600;color:var(--ink);letter-spacing:.1px}
+.lau-brand-sub{font-size:9.5px;color:var(--ink-4);text-transform:uppercase;letter-spacing:1px;margin-top:1px}
+
+.lau-body{max-width:1100px;margin:0 auto;padding:42px 32px 64px}
+.lau-hero{margin-bottom:28px}
+.lau-hello{font-size:22px;font-weight:400;color:var(--ink);letter-spacing:-.4px}
+.lau-hello b{font-weight:600}
+.lau-meta{font-size:12.5px;color:var(--ink-3);margin-top:6px}
+
+.lau-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:14px
+}
+.lau-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:20px;cursor:pointer;
+  transition:box-shadow .2s,border-color .2s,transform .18s;
+  display:flex;flex-direction:column
+}
+.lau-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.07);border-color:#cdd0c8;transform:translateY(-2px)}
+.lau-card-head{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:13px}
+.lau-card-icon{
+  width:42px;height:42px;border-radius:9px;
+  background:var(--green-lt);border:1px solid var(--green-dim);
+  display:flex;align-items:center;justify-content:center;font-size:20px
+}
+.lau-level{
+  font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.2px
+}
+.lau-level.admin{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+.lau-level.user{background:var(--rule-lt);color:var(--ink-3);border:1px solid var(--rule)}
+.lau-card-name{font-size:14px;font-weight:500;color:var(--ink);letter-spacing:-.1px;margin-bottom:5px}
+.lau-card-desc{font-size:12px;color:var(--ink-3);font-weight:400;line-height:1.55;flex:1}
+.lau-card-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:14px;padding-top:12px;border-top:1px solid var(--rule-lt);
+  font-size:11.5px;color:var(--ink-4);font-family:var(--mono)
+}
+.lau-card-arrow{
+  font-size:13px;color:var(--green-mid);font-weight:500;font-family:var(--font)
+}
+
+.lau-empty{
+  background:var(--white);border:1px dashed var(--rule);border-radius:10px;
+  padding:60px 24px;text-align:center;color:var(--ink-4);font-size:12.5px
+}
+.lau-empty b{display:block;color:var(--ink-2);font-size:14px;font-weight:500;margin-bottom:6px}
+
+/* ─────────────────────────────────────
+   APP STUB / DENIED
+───────────────────────────────────── */
+.appv,.deniedv{
+  display:none;height:100vh;overflow-y:auto;
+  background:var(--surface)
+}
+.app-top,.dn-top{
+  background:var(--white);border-bottom:1px solid var(--rule);
+  padding:11px 28px;display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:10
+}
+.app-top-title{font-size:12.5px;font-weight:500;color:var(--ink-2);flex:1;letter-spacing:.1px}
+.back-btn{
+  display:inline-flex;align-items:center;gap:6px;
+  padding:6px 12px;border-radius:7px;
+  background:var(--surface);border:1px solid var(--rule);color:var(--ink-2);
+  font-family:var(--font);font-size:11.5px;font-weight:500;
+  cursor:pointer;transition:background .15s,border-color .15s
+}
+.back-btn:hover{background:var(--rule-lt);border-color:#cdd0c8}
+.back-btn svg{width:11px;height:11px;fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round}
+
+.app-body,.dn-body{
+  max-width:780px;margin:0 auto;padding:42px 32px 64px
+}
+.app-hero{
+  background:var(--white);border:1px solid var(--rule);border-radius:14px;
+  padding:32px 30px;display:flex;gap:22px;align-items:flex-start
+}
+.app-hero-icon{
+  width:72px;height:72px;border-radius:14px;
+  background:var(--green-lt);border:1px solid var(--green-dim);
+  display:flex;align-items:center;justify-content:center;font-size:34px;flex-shrink:0
+}
+.app-hero-body{flex:1;min-width:0}
+.app-hero-eyebrow{font-size:10px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.app-hero-name{font-size:22px;font-weight:600;color:var(--ink);letter-spacing:-.4px}
+.app-hero-desc{font-size:12.5px;color:var(--ink-3);margin-top:8px;line-height:1.55}
+
+.app-meta{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:11px;margin-top:18px
+}
+.app-meta-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:13px 16px
+}
+.app-meta-l{font-size:9.5px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:5px}
+.app-meta-v{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:-.1px;font-family:var(--mono)}
+
+.app-stub-note{
+  background:var(--white);border:1px dashed var(--rule);border-radius:10px;
+  padding:22px 24px;margin-top:14px;color:var(--ink-3);font-size:12.5px;line-height:1.6
+}
+.app-stub-note b{color:var(--ink);font-weight:500}
+
+.dn-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:14px;
+  padding:42px 32px;text-align:center
+}
+.dn-icon{
+  width:54px;height:54px;border-radius:50%;
+  background:#fdeaea;border:1px solid #f0d0d0;
+  display:inline-flex;align-items:center;justify-content:center;
+  margin-bottom:16px;color:#c0392b;font-size:22px
+}
+.dn-title{font-size:17px;font-weight:600;color:var(--ink);letter-spacing:-.2px;margin-bottom:8px}
+.dn-msg{font-size:12.5px;color:var(--ink-3);max-width:400px;margin:0 auto 22px;line-height:1.55}
+
+/* ─────────────────────────────────────
+   TEAM PAGE
+───────────────────────────────────── */
+.team-wrap{max-width:920px}
+.team-header{
+  display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:18px
+}
+.team-h1{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.2px}
+.team-sub{font-size:12px;color:var(--ink-3);margin-top:4px}
+
+.team-add{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:13px 14px;margin-bottom:14px;
+  display:flex;gap:8px;align-items:center;flex-wrap:wrap
+}
+.team-add input{
+  flex:1;padding:8px 12px;border:1px solid var(--rule);
+  border-radius:7px;font-family:var(--font);font-size:12px;
+  color:var(--ink);outline:none;background:var(--white);
+  transition:border-color .15s;min-width:140px
+}
+.team-add input:focus{border-color:var(--green-mid)}
+.team-add button{
+  padding:8px 16px;border-radius:7px;background:var(--ink);color:#fff;
+  font-family:var(--font);font-size:12px;font-weight:500;
+  border:none;cursor:pointer;transition:background .15s;flex-shrink:0
+}
+.team-add button:hover{background:var(--ink-2)}
+
+.tu{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  margin-bottom:8px;overflow:hidden;
+  transition:border-color .15s
+}
+.tu.expanded{border-color:#cdd0c8}
+.tu-row{
+  display:flex;align-items:center;gap:12px;
+  padding:12px 14px;cursor:pointer
+}
+.tu-av{
+  width:34px;height:34px;border-radius:8px;background:var(--ink);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11.5px;font-weight:600;flex-shrink:0;letter-spacing:.4px
+}
+.tu-body{flex:1;min-width:0}
+.tu-name{font-size:13px;font-weight:500;color:var(--ink);letter-spacing:-.1px}
+.tu-email{font-size:10.5px;color:var(--ink-4);font-family:var(--mono);margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.tu-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tu-count{font-size:10.5px;color:var(--ink-3);font-family:var(--mono)}
+.tu-chev{
+  width:16px;height:16px;display:flex;align-items:center;justify-content:center;
+  color:var(--ink-4);transition:transform .2s;font-size:10px
+}
+.tu.expanded .tu-chev{transform:rotate(90deg)}
+.tu-rm{
+  width:24px;height:24px;border-radius:6px;
+  background:transparent;border:none;color:var(--ink-4);cursor:pointer;
+  display:flex;align-items:center;justify-content:center;font-size:13px;
+  transition:background .15s,color .15s
+}
+.tu-rm:hover{background:#fdeaea;color:#c0392b}
+
+.tu-perms{display:none;border-top:1px solid var(--rule-lt);padding:14px;background:var(--surface)}
+.tu.expanded .tu-perms{display:block}
+
+.tu-invite{
+  background:var(--white);border:1px solid var(--rule);border-radius:8px;
+  padding:9px 12px;margin-bottom:12px;
+  display:flex;align-items:center;gap:10px
+}
+.tu-invite-l{font-size:9.5px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;flex-shrink:0}
+.tu-invite-v{
+  flex:1;font-family:var(--mono);font-size:10.5px;color:var(--ink);
+  background:var(--surface);padding:5px 8px;border-radius:5px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  border:1px solid var(--rule-lt);min-width:0
+}
+.tu-invite-cp{
+  padding:5px 11px;border-radius:6px;background:var(--ink);color:#fff;
+  font-family:var(--font);font-size:10.5px;font-weight:500;
+  border:none;cursor:pointer;transition:background .15s;flex-shrink:0
+}
+.tu-invite-cp:hover{background:var(--ink-2)}
+
+.tu-cat{
+  background:var(--white);border:1px solid var(--rule);border-radius:8px;
+  margin-bottom:6px;overflow:hidden
+}
+.tu-cat-head{
+  display:flex;align-items:center;gap:11px;
+  padding:9px 13px;cursor:pointer;
+  transition:background .15s
+}
+.tu-cat-head:hover{background:var(--surface)}
+.tu-cat.open .tu-cat-head{background:var(--rule-lt)}
+.tu-cb{
+  width:16px;height:16px;border-radius:4px;
+  border:1.5px solid var(--rule);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .15s,border-color .15s
+}
+.tu-cb.checked{background:var(--green-mid);border-color:var(--green-mid)}
+.tu-cb.partial{background:var(--green-mid);border-color:var(--green-mid)}
+.tu-cb svg{width:10px;height:10px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;display:none}
+.tu-cb.checked svg.tick,.tu-cb.partial svg.dash{display:block}
+.tu-cat-name{font-size:12px;font-weight:500;color:var(--ink);flex:1}
+.tu-cat-count{font-size:10.5px;color:var(--ink-4);font-family:var(--mono)}
+.tu-cat-chev{
+  width:14px;height:14px;color:var(--ink-4);transition:transform .2s;
+  margin-left:6px;display:flex;align-items:center;justify-content:center;font-size:9px
+}
+.tu-cat.open .tu-cat-chev{transform:rotate(90deg)}
+
+.tu-cat-body{display:none;padding:4px 10px 8px;border-top:1px solid var(--rule-lt);background:var(--surface)}
+.tu-cat.open .tu-cat-body{display:block}
+
+.tu-w{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 8px;border-radius:6px;
+  transition:background .15s
+}
+.tu-w:hover{background:var(--white)}
+.tu-w-cb{
+  width:14px;height:14px;border-radius:3px;
+  border:1.5px solid var(--rule);background:var(--white);
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .15s,border-color .15s
+}
+.tu-w-cb.checked{background:var(--green-mid);border-color:var(--green-mid)}
+.tu-w-cb svg{width:9px;height:9px;fill:none;stroke:#fff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round;display:none}
+.tu-w-cb.checked svg{display:block}
+.tu-w-ic{font-size:13px;flex-shrink:0}
+.tu-w-name{font-size:11.5px;color:var(--ink-2);flex:1}
+.tu-w-lvl{
+  display:flex;gap:0;border:1px solid var(--rule);border-radius:5px;overflow:hidden;flex-shrink:0
+}
+.tu-w-lvl button{
+  padding:3px 9px;font-size:9.5px;font-weight:500;
+  background:var(--white);color:var(--ink-3);border:none;cursor:pointer;
+  font-family:var(--mono);letter-spacing:.4px;text-transform:uppercase;
+  transition:background .15s,color .15s
+}
+.tu-w-lvl button.on{background:var(--ink);color:#fff}
+.tu-w-lvl button:not(.on):hover{background:var(--surface);color:var(--ink-2)}
+.tu-w-lvl button:disabled{opacity:.35;cursor:not-allowed;background:var(--surface)}
+
+.tu-empty{padding:20px;text-align:center;color:var(--ink-4);font-size:12px}
+
+/* ─────────────────────────────────────
+   SETTINGS PAGE
+───────────────────────────────────── */
+.set-wrap{max-width:680px}
+.set-h1{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.2px;margin-bottom:18px}
+.set-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:20px 22px;margin-bottom:14px
+}
+.set-card-h{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.1px;margin-bottom:5px}
+.set-card-sub{font-size:11.5px;color:var(--ink-3);margin-bottom:16px;line-height:1.5}
+
+.set-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px 0;border-bottom:1px solid var(--rule-lt);font-size:12.5px
+}
+.set-row:last-child{border-bottom:none}
+.set-row-l{color:var(--ink-3);font-weight:400;font-size:11px;text-transform:uppercase;letter-spacing:1px}
+.set-row-v{color:var(--ink);font-weight:500;font-family:var(--mono);font-size:12px}
+
+.key-card{
+  background:var(--ink);border-radius:10px;padding:18px 20px;
+  margin-bottom:14px;color:#fff
+}
+.key-card-l{font-size:9.5px;font-weight:500;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:8px}
+.key-row{display:flex;gap:8px;align-items:center}
+.key-val{
+  flex:1;font-family:var(--mono);font-size:12px;color:#fff;
+  background:rgba(255,255,255,.06);padding:8px 12px;border-radius:6px;
+  border:1px solid rgba(255,255,255,.08);
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;letter-spacing:.3px;min-width:0
+}
+.key-act{
+  padding:8px 14px;border-radius:6px;
+  background:rgba(255,255,255,.08);color:#fff;
+  font-family:var(--font);font-size:11.5px;font-weight:500;
+  border:1px solid rgba(255,255,255,.1);cursor:pointer;
+  transition:background .15s;flex-shrink:0
+}
+.key-act:hover{background:rgba(255,255,255,.14)}
+.key-note{font-size:10.5px;color:rgba(255,255,255,.35);margin-top:10px;font-weight:400;line-height:1.5}
+
+.set-danger{
+  padding:9px 16px;border-radius:7px;
+  background:#fdeaea;color:#c0392b;border:1px solid #f0d0d0;
+  font-family:var(--font);font-size:12px;font-weight:500;
+  cursor:pointer;transition:background .15s
+}
+.set-danger:hover{background:#fbd6d6}
+
+/* ─────────────────────────────────────
+   KPI PAGE
+───────────────────────────────────── */
+.kpi-wrap{max-width:1100px}
+.kpi-header{margin-bottom:22px}
+.kpi-h1{font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.2px}
+.kpi-sub{font-size:12px;color:var(--ink-3);margin-top:4px}
+.kpi-demo-badge{
+  display:inline-block;font-size:9px;font-weight:500;
+  padding:2px 8px;border-radius:4px;
+  background:#fef9e7;color:#8a6800;border:1px solid #f0e0a0;
+  font-family:var(--mono);letter-spacing:.3px;margin-left:10px;vertical-align:middle
+}
+
+/* Pulse strip */
+.kpi-pulse{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:11px;margin-bottom:24px
+}
+.kpi-ps{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  padding:16px 18px;position:relative;overflow:hidden
+}
+.kpi-ps-l{font-size:9.5px;font-weight:500;color:var(--ink-4);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:7px}
+.kpi-ps-v{font-size:28px;font-weight:300;color:var(--ink);letter-spacing:-.8px;font-family:var(--font)}
+.kpi-ps-note{font-size:11px;color:var(--ink-3);margin-top:4px}
+.kpi-ps-dot{
+  width:8px;height:8px;border-radius:50%;
+  position:absolute;top:16px;right:16px
+}
+.dot-green{background:#4a7c2f}
+.dot-amber{background:#c68b00}
+.dot-red{background:#c0392b}
+
+/* App KPI cards */
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+  gap:14px
+}
+.kpi-card{
+  background:var(--white);border:1px solid var(--rule);border-radius:10px;
+  overflow:hidden;transition:box-shadow .2s,border-color .2s
+}
+.kpi-card:hover{box-shadow:0 4px 20px rgba(0,0,0,.05);border-color:#cdd0c8}
+.kpi-card-head{
+  display:flex;align-items:center;gap:11px;
+  padding:14px 18px;border-bottom:1px solid var(--rule-lt)
+}
+.kpi-card-icon{
+  width:34px;height:34px;border-radius:8px;
+  background:var(--green-lt);border:1px solid var(--green-dim);
+  display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0
+}
+.kpi-card-name{font-size:13px;font-weight:500;color:var(--ink);flex:1;letter-spacing:-.1px}
+.kpi-card-health{
+  font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.2px
+}
+.health-good{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+.health-warn{background:#fef9e7;color:#8a6800;border:1px solid #f0e0a0}
+.health-bad{background:#fdeaea;color:#c0392b;border:1px solid #f0d0d0}
+
+.kpi-card-body{padding:14px 18px 4px}
+
+.kpi-metric{
+  display:flex;align-items:flex-start;gap:14px;
+  padding:8px 0;border-bottom:1px solid var(--rule-lt)
+}
+.kpi-metric:last-child{border-bottom:none}
+.kpi-m-body{flex:1;min-width:0}
+.kpi-m-label{font-size:11px;color:var(--ink-3);margin-bottom:4px;letter-spacing:.1px}
+.kpi-m-row{display:flex;align-items:baseline;gap:8px}
+.kpi-m-val{font-size:18px;font-weight:400;color:var(--ink);letter-spacing:-.4px;font-family:var(--font)}
+.kpi-m-unit{font-size:11px;color:var(--ink-4);font-family:var(--mono)}
+.kpi-m-target{font-size:10px;color:var(--ink-4);margin-top:2px;font-family:var(--mono)}
+.kpi-m-bar{
+  height:3px;background:var(--rule);border-radius:2px;
+  margin-top:6px;overflow:hidden;max-width:160px
+}
+.kpi-m-bar-fill{height:100%;border-radius:2px;transition:width .4s var(--ease)}
+.bar-green{background:var(--green-mid)}
+.bar-amber{background:#c68b00}
+.bar-red{background:#c0392b}
+
+.kpi-spark{flex-shrink:0;width:72px;height:28px;align-self:center}
+.kpi-spark svg{width:100%;height:100%}
+.kpi-spark polyline{fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.spark-green{stroke:var(--green-mid)}
+.spark-amber{stroke:#c68b00}
+.spark-red{stroke:#c0392b}
+
+.kpi-card-foot{
+  padding:10px 18px;border-top:1px solid var(--rule-lt);
+  display:flex;align-items:center;justify-content:space-between
+}
+.kpi-open{
+  font-size:11.5px;font-weight:500;color:var(--green-mid);
+  cursor:pointer;font-family:var(--font);
+  border:none;background:none;padding:0;
+  transition:color .15s
+}
+.kpi-open:hover{color:var(--green)}
+.kpi-cat-badge{font-size:10px;color:var(--ink-4);font-family:var(--mono)}
+
+.kpi-empty{
+  background:var(--white);border:1px dashed var(--rule);border-radius:10px;
+  padding:48px 24px;text-align:center;color:var(--ink-4);font-size:12.5px;
+  grid-column:1/-1
+}
+.kpi-empty b{display:block;color:var(--ink-2);font-size:14px;font-weight:500;margin-bottom:6px}
+
+@media(max-width:700px){
+  .kpi-pulse{grid-template-columns:repeat(2,1fr)}
+  .kpi-grid{grid-template-columns:1fr}
+  .app-meta{grid-template-columns:1fr}
+}
+
+/* ─────────────────────────────────────
+   IMPACT BADGES
+───────────────────────────────────── */
+.impact-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:9.5px;font-weight:500;padding:2px 8px;border-radius:4px;
+  font-family:var(--mono);letter-spacing:.2px;white-space:nowrap
+}
+.impact-low{background:#eef1f6;color:#5a6577;border:1px solid #d6dbe5}
+.impact-mid{background:#fef9e7;color:#8a6800;border:1px solid #f0e0a0}
+.impact-high{background:var(--green-lt);color:var(--green);border:1px solid var(--green-dim)}
+
+.impact-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0}
+.impact-low .impact-dot{background:#8494a7}
+.impact-mid .impact-dot{background:#c68b00}
+.impact-high .impact-dot{background:var(--green)}
+
+.wc-impact-row{
+  display:flex;align-items:center;gap:8px;
+  margin-top:8px;margin-bottom:2px
+}
+.wc-impact-desc{
+  font-size:10.5px;color:var(--ink-4);font-weight:400;
+  line-height:1.45;margin-top:4px;font-style:italic
+}
+.wc-impact-val{
+  font-size:10px;color:var(--ink-3);font-family:var(--mono);letter-spacing:.2px
+}
+
+/* ─────────────────────────────────────
+   LICENSE TIER CARDS (billing page)
+───────────────────────────────────── */
+.tier-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:10px;margin-bottom:20px
+}
+.tier-card{
+  background:var(--white);border:2px solid var(--rule);border-radius:10px;
+  padding:18px 16px;position:relative;
+  transition:border-color .15s,box-shadow .15s
+}
+.tier-card.current{border-color:var(--green-mid);box-shadow:0 0 0 1px var(--green-mid)}
+.tier-card-badge{
+  position:absolute;top:-8px;right:12px;
+  font-size:9px;font-weight:600;padding:2px 8px;border-radius:4px;
+  background:var(--green-mid);color:#fff;letter-spacing:.5px;
+  font-family:var(--mono);text-transform:uppercase;display:none
+}
+.tier-card.current .tier-card-badge{display:block}
+.tier-card-name{font-size:14px;font-weight:600;color:var(--ink);letter-spacing:-.1px;margin-bottom:3px}
+.tier-card-price{font-size:22px;font-weight:300;color:var(--ink);letter-spacing:-.5px;margin-bottom:2px}
+.tier-card-price small{font-size:11px;font-weight:400;color:var(--ink-4)}
+.tier-card-inc{
+  font-size:11px;color:var(--ink-3);line-height:1.6;margin-top:10px;
+  padding-top:10px;border-top:1px solid var(--rule-lt)
+}
+.tier-card-inc b{color:var(--ink-2);font-weight:500}
+
+/* Billing cycle toggle */
+.bill-cycle{
+  display:inline-flex;border:1px solid var(--rule);border-radius:8px;overflow:hidden;margin-bottom:18px
+}
+.bill-cycle-btn{
+  padding:8px 18px;font-size:12px;font-weight:500;
+  background:var(--white);color:var(--ink-3);border:none;cursor:pointer;
+  font-family:var(--font);letter-spacing:.1px;
+  transition:background .15s,color .15s;position:relative
+}
+.bill-cycle-btn.on{background:var(--ink);color:#fff}
+.bill-cycle-btn:not(.on):hover{background:var(--surface);color:var(--ink-2)}
+.bill-save-tag{
+  font-size:8.5px;font-weight:600;padding:1px 6px;border-radius:3px;
+  background:var(--green-mid);color:#fff;margin-left:6px;
+  letter-spacing:.3px;font-family:var(--mono);vertical-align:middle
+}
+.bill-row-monthly{
+  font-size:11px;color:var(--ink-4);font-family:var(--mono);margin-left:6px
+}
+
+/* ROI summary strip */
+.roi-strip{
+  background:var(--ink);border-radius:10px;
+  padding:22px 24px;margin-bottom:16px;
+  display:grid;grid-template-columns:repeat(3,1fr);gap:20px
+}
+.roi-cell{}
+.roi-cell-l{font-size:9px;font-weight:400;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1.2px;margin-bottom:6px}
+.roi-cell-v{font-size:26px;font-weight:300;color:var(--white);letter-spacing:-.6px}
+.roi-cell-v small{font-size:12px;font-weight:400;color:rgba(255,255,255,.35)}
+.roi-cell-note{font-size:10.5px;color:rgba(255,255,255,.3);margin-top:4px}
+.roi-cell-v.green{color:#a0d87a}
+
+/* impact breakdown in billing */
+.bill-impact-head{
+  font-size:9.5px;font-weight:500;color:var(--ink-4);text-transform:uppercase;
+  letter-spacing:1.2px;margin:18px 0 8px
+}
+.bill-row .impact-badge{margin-left:auto;margin-right:12px}
 </style>
 </head>
 <body>
-<div class="shell">
+
+<!-- ── LOGIN OVERLAY ── -->
+<div class="auth-overlay" id="loginOverlay">
+  <div class="auth-card">
+    <div class="auth-head">
+      <div class="auth-mark">
+        <svg viewBox="0 0 32 32" style="stroke-linejoin:round">
+          <circle cx="16" cy="16" r="13" stroke-width="1.4"/>
+          <circle cx="16" cy="16" r="10.2" stroke-width="0.9" opacity=".55"/>
+          <g stroke-width="1.2" stroke-linecap="round">
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5"/>
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(60 16 16)"/>
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(120 16 16)"/>
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(180 16 16)"/>
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(240 16 16)"/>
+            <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(300 16 16)"/>
+          </g>
+          <circle cx="16" cy="16" r="2.2" stroke-width="1"/>
+        </svg>
+      </div>
+      <div class="auth-title">Sign in to SystemVault</div>
+      <div class="auth-sub">Pick a demo account to explore the access model</div>
+    </div>
+    <div class="auth-body">
+      <div class="auth-section-l">Demo accounts</div>
+      <div id="loginAccounts"></div>
+
+      <div class="auth-divider">or use a master key</div>
+      <div class="auth-key-row">
+        <input type="text" id="masterKeyInput" placeholder="sv_live_xxxxxxxxxxxx">
+        <button class="auth-key-btn" onclick="claimWithKey()">Claim</button>
+      </div>
+    </div>
+    <div class="auth-foot">Demo · auth simulated via localStorage · not for production</div>
+  </div>
+</div>
+
+<!-- ── DENIED VIEW ── -->
+<div class="deniedv" id="deniedView">
+  <div class="dn-top">
+    <button class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 12 12"><polyline points="7,1 3,6 7,11"/></svg>
+      Back
+    </button>
+    <div class="app-top-title" id="dnHeader">Access denied</div>
+    <div id="dnUserSlot"></div>
+  </div>
+  <div class="dn-body">
+    <div class="dn-card">
+      <div class="dn-icon">⛔</div>
+      <div class="dn-title">You don't have access to this app</div>
+      <div class="dn-msg" id="dnMsg">Ask your SystemVault admin to grant you a permit for this widget.</div>
+      <button class="back-btn" onclick="goHome()" style="display:inline-flex">
+        <svg viewBox="0 0 12 12"><polyline points="7,1 3,6 7,11"/></svg>
+        Return
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ── APP VIEW (per-widget stub) ── -->
+<div class="appv" id="appView">
+  <div class="app-top">
+    <button class="back-btn" onclick="goHome()">
+      <svg viewBox="0 0 12 12"><polyline points="7,1 3,6 7,11"/></svg>
+      Back
+    </button>
+    <div class="app-top-title" id="appTopTitle">App</div>
+    <div id="appUserSlot"></div>
+  </div>
+  <div class="app-body" id="appBody"></div>
+</div>
+
+<!-- ── LAUNCHER VIEW (non-admin users) ── -->
+<div class="lauv" id="launcherView">
+  <div class="lau-top">
+    <div class="lau-mark">
+      <svg viewBox="0 0 32 32" style="stroke-linejoin:round">
+        <circle cx="16" cy="16" r="13" stroke-width="1.4"/>
+        <circle cx="16" cy="16" r="10.2" stroke-width="0.9" opacity=".55"/>
+        <g stroke-width="1.2" stroke-linecap="round">
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5"/>
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(60 16 16)"/>
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(120 16 16)"/>
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(180 16 16)"/>
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(240 16 16)"/>
+          <rect x="15.25" y="4.2" width="1.5" height="3.8" rx="0.5" transform="rotate(300 16 16)"/>
+        </g>
+      </svg>
+    </div>
+    <div class="lau-brand">
+      <div class="lau-brand-name">SystemVault</div>
+      <div class="lau-brand-sub" id="lauTenant">Workspace</div>
+    </div>
+    <div id="lauUserSlot"></div>
+  </div>
+  <div class="lau-body">
+    <div class="lau-hero">
+      <div class="lau-hello">Welcome, <b id="lauHelloName">there</b></div>
+      <div class="lau-meta" id="lauHelloMeta">Your apps are listed below.</div>
+    </div>
+    <div class="lau-grid" id="lauGrid"></div>
+  </div>
+</div>
+
+<div class="shell" id="shell">
 
   <!-- ── SIDEBAR ── -->
   <aside class="sb" id="sb">
@@ -533,6 +1306,10 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
           <svg viewBox="0 0 16 16"><rect x="1" y="1" width="6" height="6" rx="1.5"/><rect x="9" y="1" width="6" height="6" rx="1.5"/><rect x="1" y="9" width="6" height="6" rx="1.5"/><rect x="9" y="9" width="6" height="6" rx="1.5"/></svg>
           My Widgets
         </div>
+        <div class="nav-item" onclick="setNav(this,'kpi')">
+          <svg viewBox="0 0 16 16"><path d="M1 14h14"/><rect x="2" y="8" width="2.5" height="6" rx=".5"/><rect x="6.75" y="4" width="2.5" height="10" rx=".5"/><rect x="11.5" y="1" width="2.5" height="13" rx=".5"/></svg>
+          KPIs
+        </div>
         <div class="nav-item" onclick="setNav(this,'billing')">
           <svg viewBox="0 0 16 16"><rect x="1" y="3" width="14" height="10" rx="2"/><path d="M1 6h14"/><path d="M4 10h3"/></svg>
           Billing
@@ -562,7 +1339,7 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
           <div class="co-av">EW</div>
           <div>
             <div class="co-name">SystemVault</div>
-            <div class="co-plan">Growth Plan</div>
+            <div class="co-plan" id="sbPlanLabel">Professional</div>
           </div>
         </div>
       </div>
@@ -587,12 +1364,29 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
           <svg viewBox="0 0 14 14"><circle cx="7" cy="7" r="2"/><path d="M7 1v2M7 11v2M1 7h2M11 7h2M2.9 2.9l1.4 1.4M9.7 9.7l1.4 1.4M2.9 11.1l1.4-1.4M9.7 4.3l1.4-1.4"/></svg>
           Alter my workflow
         </button>
-        <div class="tb-av">EW</div>
+        <div class="user-menu" id="userMenu">
+          <div class="user-menu-trigger" onclick="toggleUserMenu(event)">
+            <div class="user-menu-av" id="umAv">EW</div>
+            <div class="user-menu-name" id="umName">Admin</div>
+          </div>
+          <div class="user-menu-pop" id="userMenuPop">
+            <div class="umh">
+              <div class="umh-name" id="umhName">—</div>
+              <div class="umh-email" id="umhEmail">—</div>
+              <span class="umh-role role-admin" id="umhRole">Admin</span>
+            </div>
+            <div class="um-item" onclick="logout()">
+              <svg viewBox="0 0 16 16"><path d="M10 11l3-3-3-3M13 8H6"/><path d="M9 1H3a1 1 0 00-1 1v12a1 1 0 001 1h6"/></svg>
+              Sign out
+            </div>
+          </div>
+        </div>
       </div>
     </div>
 
     <div class="sub-nav">
       <button class="sub-tab on"  onclick="switchPage('workspace',this)">Workspace</button>
+      <button class="sub-tab"     onclick="switchPage('kpi',this)">KPIs</button>
       <button class="sub-tab"     onclick="switchPage('billing',this)">Billing</button>
       <button class="sub-tab"     onclick="switchPage('team',this)">Team</button>
       <button class="sub-tab"     onclick="switchPage('settings',this)">Settings</button>
@@ -616,24 +1410,100 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
 
       <!-- BILLING -->
       <div class="pg" id="pg-billing">
-        <div class="bill-wrap">
-          <div class="bill-hero">
+        <div class="bill-wrap" style="max-width:920px">
+
+          <!-- Header + cycle toggle -->
+          <div style="display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
             <div>
-              <div class="bill-lbl">Monthly total</div>
-              <div><span class="bill-amt" id="billAmt">£89</span><span class="bill-per">/mo</span></div>
-              <div class="bill-next">Next billing: 1 Apr 2026</div>
+              <div style="font-size:18px;font-weight:600;color:var(--ink);letter-spacing:-.2px;margin-bottom:4px">Billing</div>
+              <div style="font-size:12px;color:var(--ink-3)">Your license tier, billing cycle and active widget costs.</div>
             </div>
-            <div>
-              <div class="bill-stat-v" id="billCount">4</div>
-              <div class="bill-stat-l">Active</div>
+            <div class="bill-cycle" id="billCycle">
+              <button class="bill-cycle-btn" onclick="setBillCycle('monthly')">Monthly</button>
+              <button class="bill-cycle-btn on" onclick="setBillCycle('annual')">Annual <span class="bill-save-tag">Save 25%</span></button>
             </div>
           </div>
+
+          <!-- License tiers -->
+          <div class="tier-grid" id="tierGrid"></div>
+
+          <!-- Cost summary strip -->
+          <div class="roi-strip" id="roiStrip"></div>
+
+          <!-- Widget cost breakdown -->
+          <div class="bill-impact-head">Active widget costs</div>
           <div class="bill-card" id="billRows"></div>
         </div>
       </div>
 
-      <div class="pg" id="pg-team"><div class="placeholder">Team management — coming soon</div></div>
-      <div class="pg" id="pg-settings"><div class="placeholder">Settings — coming soon</div></div>
+      <!-- KPIs -->
+      <div class="pg" id="pg-kpi">
+        <div class="kpi-wrap">
+          <div class="kpi-header">
+            <div class="kpi-h1">KPI Dashboard <span class="kpi-demo-badge">Demo data</span></div>
+            <div class="kpi-sub">Live metrics from your active apps. In production these numbers are fed by each widget's API.</div>
+          </div>
+          <div class="kpi-pulse" id="kpiPulse"></div>
+          <div class="kpi-grid" id="kpiGrid"></div>
+        </div>
+      </div>
+
+      <!-- TEAM -->
+      <div class="pg" id="pg-team">
+        <div class="team-wrap">
+          <div class="team-header">
+            <div>
+              <div class="team-h1">Team &amp; access</div>
+              <div class="team-sub">Add people and grant them permits to specific apps. They never see the Vault — only the apps you allow.</div>
+            </div>
+          </div>
+          <div class="team-add">
+            <input type="text" id="newUserName" placeholder="Full name (e.g. Pat Lee)">
+            <input type="email" id="newUserEmail" placeholder="email@company.com">
+            <button onclick="addTeamUser()">+ Add person</button>
+          </div>
+          <div id="teamList"></div>
+        </div>
+      </div>
+
+      <!-- SETTINGS -->
+      <div class="pg" id="pg-settings">
+        <div class="set-wrap">
+          <div class="set-h1">Settings</div>
+
+          <div class="set-card">
+            <div class="set-card-h">Workspace</div>
+            <div class="set-card-sub">High-level info about your tenant. This is what would be created when you purchase SystemVault.</div>
+            <div class="set-row"><span class="set-row-l">Company</span><span class="set-row-v" id="setTenantName">—</span></div>
+            <div class="set-row"><span class="set-row-l">Users</span><span class="set-row-v" id="setTenantUsers">—</span></div>
+            <div class="set-row"><span class="set-row-l">Active widgets</span><span class="set-row-v" id="setTenantApps">—</span></div>
+          </div>
+
+          <div class="set-card">
+            <div class="set-card-h">License tier</div>
+            <div class="set-card-sub">Your current plan determines platform access and included build hours.</div>
+            <div class="set-row"><span class="set-row-l">Current tier</span><span class="set-row-v" id="setTierName">—</span></div>
+            <div class="set-row"><span class="set-row-l">Annual licence</span><span class="set-row-v" id="setTierPrice">—</span></div>
+            <div class="set-row"><span class="set-row-l">Build hours</span><span class="set-row-v" id="setTierHours">—</span></div>
+          </div>
+
+          <div class="key-card">
+            <div class="key-card-l">Master key</div>
+            <div class="key-row">
+              <div class="key-val" id="setMasterKey">—</div>
+              <button class="key-act" onclick="copyMasterKey()">Copy</button>
+              <button class="key-act" onclick="regenMasterKey()">Regenerate</button>
+            </div>
+            <div class="key-note">In the real product this key is issued when a manager buys SystemVault. Logging in with it claims ownership of the workspace. Treat it like a password.</div>
+          </div>
+
+          <div class="set-card">
+            <div class="set-card-h">Reset demo</div>
+            <div class="set-card-sub">Wipe all simulated users, entitlements, and widget state. Restores the seeded demo accounts.</div>
+            <button class="set-danger" onclick="resetDemo()">Reset demo data</button>
+          </div>
+        </div>
+      </div>
       <div class="pg" id="pg-custom"><div class="placeholder">Custom widget requests — coming soon</div></div>
       <div class="pg" id="pg-help"><div class="placeholder">Help &amp; docs — coming soon</div></div>
     </div>
@@ -655,10 +1525,10 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
         <div>
           <div class="ps-label">Monthly total</div>
           <div style="display:flex;align-items:baseline;gap:8px">
-            <span class="ps-current" id="psCurrent">£89</span>
+            <span class="ps-current" id="psCurrent">£0</span>
             <span style="font-size:10px;color:rgba(255,255,255,.25)">→</span>
-            <span class="ps-new" id="psNew">£89</span>
-            <span class="ps-per">/mo</span>
+            <span class="ps-new" id="psNew">£0</span>
+            <span class="ps-per">/yr</span>
           </div>
         </div>
         <div class="ps-delta zero" id="psDelta">No changes</div>
@@ -686,16 +1556,55 @@ html,body{height:100%;font-family:var(--font);background:var(--surface);color:va
 
 <script>
 const ALL = [
-  {id:'opinion-ape', name:'Opinion Ape',  icon:'🐒', cat:'People',     price:29, active:true,  isNew:false, desc:'Employee suggestions, voting and manager responses — all in one place.'},
-  {id:'pulse-check', name:'Pulse Check',  icon:'📊', cat:'People',     price:19, active:true,  isNew:false, desc:'Automated weekly morale surveys with trend tracking over time.'},
-  {id:'desk-flow',   name:'Desk Flow',    icon:'🗓️', cat:'Facilities', price:24, active:true,  isNew:false, desc:'Hot desk and meeting room booking — claimed in seconds from any device.'},
-  {id:'onboard-ez',  name:'OnboardEZ',   icon:'🚀', cat:'HR',         price:17, active:true,  isNew:false, desc:'Structured onboarding checklists for new starters, tracked end-to-end.'},
-  {id:'shiftwise',   name:'ShiftWise',   icon:'🕐', cat:'Operations', price:22, active:false, isNew:false, desc:'Shift scheduling and absence logging with one-tap manager approvals.'},
-  {id:'doc-vault',   name:'Doc Vault',   icon:'📁', cat:'Compliance', price:15, active:false, isNew:false, desc:'Central searchable document library — policies and SOPs always current.'},
-  {id:'kudos',       name:'Kudos Board', icon:'⭐', cat:'Culture',    price:12, active:false, isNew:true,  desc:'Peer recognition that surfaces to a weekly company highlight digest.'},
-  {id:'incident-log',name:'Incident Log',icon:'🛡️', cat:'Compliance', price:18, active:false, isNew:false, desc:'Fully auditable workplace incident logging with required-field guidance.'},
-  {id:'quick-poll',  name:'Quick Poll',  icon:'🗳️', cat:'Comms',      price:9,  active:false, isNew:true,  desc:'Fire instant polls to the whole company or a specific team in seconds.'},
+  {id:'opinion-ape', name:'Opinion Ape',  icon:'🐒', cat:'People',     price:5000, active:true,  isNew:false,
+    impact:'low', impactDesc:'Improves workflow speed — still requires managers to respond and act on suggestions. Doesn\'t work without operator input.',
+    desc:'Employee suggestions, voting and manager responses — all in one place.'},
+  {id:'pulse-check', name:'Pulse Check',  icon:'📊', cat:'People',     price:4500, active:true,  isNew:false,
+    impact:'low', impactDesc:'Automates survey distribution — still needs HR to interpret data and decide on actions. Feeds the workflow, doesn\'t replace it.',
+    desc:'Automated weekly morale surveys with trend tracking over time.'},
+  {id:'desk-flow',   name:'Desk Flow',    icon:'🗓️', cat:'Facilities', price:8500, active:true,  isNew:false,
+    impact:'mid', impactDesc:'Transforms facility booking entirely — eliminates back-and-forth emails, phone calls and spreadsheet tracking. The old workflow is gone.',
+    desc:'Hot desk and meeting room booking — claimed in seconds from any device.'},
+  {id:'onboard-ez',  name:'OnboardEZ',   icon:'🚀', cat:'HR',         price:9000, active:true,  isNew:false,
+    impact:'mid', impactDesc:'Changes the entire onboarding workflow — replaces scattered checklists, email chains, manual chasing. One system replaces five.',
+    desc:'Structured onboarding checklists for new starters, tracked end-to-end.'},
+  {id:'shiftwise',   name:'ShiftWise',   icon:'🕐', cat:'Operations', price:32000, active:false, isNew:false,
+    impact:'high', impactDesc:'Can remove the scheduling coordinator role entirely — auto-scheduling frees a full person\'s time. Effectively creates a new employee without the extra cost.',
+    desc:'Shift scheduling and absence logging with one-tap manager approvals.'},
+  {id:'doc-vault',   name:'Doc Vault',   icon:'📁', cat:'Compliance', price:8000, active:false, isNew:false,
+    impact:'mid', impactDesc:'Replaces paper and shared-drive chaos — single source of truth changes how compliance documentation works across the business.',
+    desc:'Central searchable document library — policies and SOPs always current.'},
+  {id:'kudos',       name:'Kudos Board', icon:'⭐', cat:'Culture',    price:4000, active:false, isNew:true,
+    impact:'low', impactDesc:'Lightweight culture tool — improves recognition workflow but needs staff participation to deliver value. Doesn\'t replace a process.',
+    desc:'Peer recognition that surfaces to a weekly company highlight digest.'},
+  {id:'incident-log',name:'Incident Log',icon:'🛡️', cat:'Compliance', price:8500, active:false, isNew:false,
+    impact:'mid', impactDesc:'Transforms incident handling from paper forms to guided digital workflow with full audit trail. The old process is replaced entirely.',
+    desc:'Fully auditable workplace incident logging with required-field guidance.'},
+  {id:'quick-poll',  name:'Quick Poll',  icon:'🗳️', cat:'Comms',      price:4000, active:false, isNew:true,
+    impact:'low', impactDesc:'Speeds up gathering opinions — still needs someone to create polls and read the results. A workflow accelerator, not a replacement.',
+    desc:'Fire instant polls to the whole company or a specific team in seconds.'},
+  {id:'permit-work', name:'Permit to Work',icon:'📋', cat:'Safety',    price:10000, active:true,  isNew:true,
+    impact:'mid', impactDesc:'Replaces paper permits, site-to-site travel for signatures and filing cabinets. Changes the entire permit workflow from end to end.',
+    desc:'Issue, track and close out permits for hazardous work — hot work, confined spaces, electrical isolation and more.'},
 ];
+
+const LICENSE_TIERS = [
+  {id:'core',         name:'Core',         price:0,     priceLabel:'Free',     hours:0, hourNote:'Custom build-outs at £50/hr',
+   includes:'Full access to all software, KPIs, metrics and team management. Any custom build work is charged at £50/hr.'},
+  {id:'professional', name:'Professional',  price:4500,  priceLabel:'£4,500',  hours:100,  hourNote:'100 hours of build time per year',
+   includes:'Everything in Core plus 100 hours of custom build time included annually.'},
+  {id:'enterprise',   name:'Enterprise',    price:20000, priceLabel:'£20,000', hours:500,  hourNote:'500 hours of build time per year',
+   includes:'Everything in Core plus 500 hours of custom build time included annually.'},
+];
+
+const IMPACT_LABELS = {low:'Low impact', mid:'Medium impact', high:'High impact'};
+const IMPACT_RANGES = {low:'£4–6k/yr', mid:'£8–10k/yr', high:'£30k+/yr'};
+const IMPACT_FLOORS = {low:'from £4k/yr', mid:'from £8k/yr', high:'from £30k/yr'};
+const IMPACT_MINS   = {low:4000, mid:8000, high:30000};
+
+// Annual price: 25% off but never below the tier minimum
+function annualPrice(w){ return Math.max(Math.round(w.price * 0.75), IMPACT_MINS[w.impact]); }
+function fmtPrice(v){ return v>=1000 ? '£'+v.toLocaleString() : '£'+v; }
 
 let draft = {};
 
@@ -717,8 +1626,12 @@ function renderWS(){
         </div>
         <div class="wc-name">${w.name}</div>
         <div class="wc-desc">${w.desc}</div>
+        <div class="wc-impact-row">
+          <span class="impact-badge impact-${w.impact}"><span class="impact-dot"></span>${IMPACT_LABELS[w.impact]} · ${IMPACT_FLOORS[w.impact]}</span>
+        </div>
+        <div class="wc-impact-desc">${w.impactDesc}</div>
         <div class="wc-foot">
-          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <span class="wc-price">${fmtPrice(w.price)}<small>/yr</small></span>
           <button class="wc-btn btn-rem" onclick="quickRemove('${w.id}')">Remove</button>
         </div>
       </div>`).join('')
@@ -735,8 +1648,12 @@ function renderWS(){
         </div>
         <div class="wc-name">${w.name}</div>
         <div class="wc-desc">${w.desc}</div>
+        <div class="wc-impact-row">
+          <span class="impact-badge impact-${w.impact}"><span class="impact-dot"></span>${IMPACT_LABELS[w.impact]} · ${IMPACT_FLOORS[w.impact]}</span>
+        </div>
+        <div class="wc-impact-desc">${w.impactDesc}</div>
         <div class="wc-foot">
-          <span class="wc-price">£${w.price}<small>/mo</small></span>
+          <span class="wc-price">${fmtPrice(w.price)}<small>/yr</small></span>
           <button class="wc-btn btn-add" onclick="event.stopPropagation();quickAdd('${w.id}')">+ Add</button>
         </div>
       </div>`).join('')
@@ -770,17 +1687,117 @@ function quickRemove(id){
 }
 
 // ── BILLING ──
+// Prices in ALL are the full annual rate (12 months).
+// Monthly = price / 12. Annual = price * 0.75 (pay for 9 months, get 12 = 25% off).
+let billCycle = 'annual';
+
+function setBillCycle(cycle){
+  billCycle = cycle;
+  document.querySelectorAll('.bill-cycle-btn').forEach(b=>b.classList.remove('on'));
+  document.querySelector(`.bill-cycle-btn[onclick*="${cycle}"]`)?.classList.add('on');
+  renderBilling();
+}
+
 function renderBilling(){
-  const active=ALL.filter(w=>w.active);
-  const total=committedTotal();
-  document.getElementById('billAmt').textContent=`£${total}`;
-  document.getElementById('billCount').textContent=active.length;
-  document.getElementById('billRows').innerHTML=active.map(w=>`
+  const active = ALL.filter(w=>w.active);
+  const isAnnual = billCycle === 'annual';
+  const discount = 0.75; // annual = 75% of monthly×12 (3 months free = 25% saving)
+  const t = getTenant();
+  const currentTier = LICENSE_TIERS.find(lt=>lt.name===t?.plan) || LICENSE_TIERS[0];
+
+  // Widget cost totals
+  const fullAnnual = committedTotal();                    // sum of all w.price (12-month rates)
+  const monthlyPerMonth = Math.round(fullAnnual / 12);    // monthly billing: per-month cost
+  const annualTotal = active.reduce((s,w)=>s+annualPrice(w),0); // annual billing: floor-enforced
+  const annualSaving = fullAnnual - annualTotal;
+
+  // Licence cost (no floor on licence tiers, just straight 25% off)
+  const tierMonthly = currentTier.price > 0 ? Math.round(currentTier.price / 12) : 0;
+  const tierAnnual = Math.round(currentTier.price * discount);
+  const tierSaving = currentTier.price - tierAnnual;
+
+  // Grand totals
+  const grandMonthly = monthlyPerMonth + tierMonthly;
+  const grandAnnual = annualTotal + tierAnnual;
+
+  // Tier cards — show prices in current cycle
+  document.getElementById('tierGrid').innerHTML = LICENSE_TIERS.map(lt=>{
+    const mo = lt.price > 0 ? Math.round(lt.price / 12) : 0;
+    const yr = Math.round(lt.price * discount); // licence tiers have no impact floor
+    const showPrice = lt.price === 0
+      ? 'Free'
+      : isAnnual
+        ? `£${yr.toLocaleString()}<small>/yr</small>`
+        : `£${mo.toLocaleString()}<small>/mo</small>`;
+    const subNote = lt.price === 0
+      ? ''
+      : isAnnual
+        ? `<div style="font-size:10px;color:var(--ink-4);margin-top:2px;font-family:var(--mono)">£${Math.round(lt.price/12).toLocaleString()}/mo if paid monthly</div>`
+        : `<div style="font-size:10px;color:var(--ink-4);margin-top:2px;font-family:var(--mono)">£${yr.toLocaleString()}/yr if paid annually (save 25%)</div>`;
+    return `
+    <div class="tier-card ${lt.name===currentTier.name?'current':''}">
+      <div class="tier-card-badge">Current</div>
+      <div class="tier-card-name">${lt.name}</div>
+      <div class="tier-card-price">${showPrice}</div>
+      ${subNote}
+      <div class="tier-card-inc">
+        <b>${lt.hours ? lt.hours+' hrs' : 'Pay-as-you-go'}</b> build time${lt.hours?'/yr':' at £50/hr'}<br>
+        ${lt.includes}
+      </div>
+    </div>`;
+  }).join('');
+
+  // Cost summary strip
+  if(isAnnual){
+    document.getElementById('roiStrip').innerHTML = `
+      <div class="roi-cell">
+        <div class="roi-cell-l">Annual payment</div>
+        <div class="roi-cell-v green">£${grandAnnual.toLocaleString()}</div>
+        <div class="roi-cell-note">One-time payment · 3 months free</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-cell-l">You save</div>
+        <div class="roi-cell-v green">£${(annualSaving + (currentTier.price - tierAnnual)).toLocaleString()}<small>/yr</small></div>
+        <div class="roi-cell-note">25% vs monthly billing</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-cell-l">Effective monthly</div>
+        <div class="roi-cell-v">£${Math.round(grandAnnual/12).toLocaleString()}<small>/mo</small></div>
+        <div class="roi-cell-note">vs £${grandMonthly.toLocaleString()}/mo if paid monthly</div>
+      </div>`;
+  } else {
+    document.getElementById('roiStrip').innerHTML = `
+      <div class="roi-cell">
+        <div class="roi-cell-l">Monthly payment</div>
+        <div class="roi-cell-v">£${grandMonthly.toLocaleString()}<small>/mo</small></div>
+        <div class="roi-cell-note">Licence + ${active.length} widget${active.length===1?'':'s'}</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-cell-l">Annual total</div>
+        <div class="roi-cell-v">£${(grandMonthly*12).toLocaleString()}<small>/yr</small></div>
+        <div class="roi-cell-note">12 monthly payments</div>
+      </div>
+      <div class="roi-cell">
+        <div class="roi-cell-l">Switch to annual?</div>
+        <div class="roi-cell-v green">Save £${((grandMonthly*12) - grandAnnual).toLocaleString()}</div>
+        <div class="roi-cell-note">Pay once, get 3 months free</div>
+      </div>`;
+  }
+
+  // Widget rows with both prices
+  document.getElementById('billRows').innerHTML = active.map(w=>{
+    const mo = Math.round(w.price / 12);
+    const yr = annualPrice(w);
+    const primary = isAnnual ? `${fmtPrice(yr)}/yr` : `${fmtPrice(mo)}/mo`;
+    const secondary = isAnnual ? `${fmtPrice(mo)}/mo` : `${fmtPrice(yr)}/yr`;
+    return `
     <div class="bill-row">
       <span class="bill-row-ic">${w.icon}</span>
       <span class="bill-row-name">${w.name}</span>
-      <span class="bill-row-price">£${w.price}/mo</span>
-    </div>`).join('');
+      <span class="impact-badge impact-${w.impact}" style="font-size:8.5px;padding:1px 6px"><span class="impact-dot"></span>${IMPACT_LABELS[w.impact]} · ${IMPACT_FLOORS[w.impact]}</span>
+      <span class="bill-row-price">${primary} <span class="bill-row-monthly">(${secondary})</span></span>
+    </div>`;
+  }).join('');
 }
 
 // ── MODAL ──
@@ -804,7 +1821,7 @@ function renderModalRows(){
       <span class="mrow-ic">${w.icon}</span>
       <div class="mrow-body">
         <div class="mrow-name">${w.name}</div>
-        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+        <div class="mrow-meta">${fmtPrice(w.price)}/yr · ${w.cat} · <span class="impact-badge impact-${w.impact}" style="display:inline-flex;vertical-align:middle;font-size:8.5px;padding:1px 6px"><span class="impact-dot"></span>${IMPACT_LABELS[w.impact]}</span></div>
       </div>
       <span class="mrow-pill ${!w.active?'show add':''}" id="mpill-${w.id}">${!w.active?'+adding':''}</span>
       <label class="m-tog" onclick="event.stopPropagation()">
@@ -818,7 +1835,7 @@ function renderModalRows(){
       <span class="mrow-ic">${w.icon}</span>
       <div class="mrow-body">
         <div class="mrow-name">${w.name}</div>
-        <div class="mrow-meta">£${w.price}/mo · ${w.cat}</div>
+        <div class="mrow-meta">${fmtPrice(w.price)}/yr · ${w.cat} · <span class="impact-badge impact-${w.impact}" style="display:inline-flex;vertical-align:middle;font-size:8.5px;padding:1px 6px"><span class="impact-dot"></span>${IMPACT_LABELS[w.impact]}</span></div>
       </div>
       <span class="mrow-pill ${w.active?'show rem':''}" id="mpill-${w.id}">${w.active?'−removing':''}</span>
       <label class="m-tog" onclick="event.stopPropagation()">
@@ -847,12 +1864,12 @@ function draftTog(id){
 
 function updatePriceStrip(){
   const cur=committedTotal(), prev=draftTotal(), diff=prev-cur, changed=hasDraft();
-  document.getElementById('psCurrent').textContent=`£${cur}`;
-  document.getElementById('psNew').textContent=`£${prev}`;
+  document.getElementById('psCurrent').textContent=fmtPrice(cur);
+  document.getElementById('psNew').textContent=fmtPrice(prev);
   const d=document.getElementById('psDelta');
   if(!changed){d.textContent='No changes';d.className='ps-delta zero';}
-  else if(diff>0){d.textContent=`+£${diff}/mo`;d.className='ps-delta pos';}
-  else if(diff<0){d.textContent=`−£${Math.abs(diff)}/mo`;d.className='ps-delta neg';}
+  else if(diff>0){d.textContent=`+${fmtPrice(diff)}/yr`;d.className='ps-delta pos';}
+  else if(diff<0){d.textContent=`−${fmtPrice(Math.abs(diff))}/yr`;d.className='ps-delta neg';}
   else{d.textContent='Same total';d.className='ps-delta zero';}
   const adds=ALL.filter(w=>!w.active&&draft[w.id]).length;
   const rems=ALL.filter(w=>w.active&&!draft[w.id]).length;
@@ -883,13 +1900,14 @@ function setNav(el,page){
 function switchPage(page,btn){
   document.querySelectorAll('.sub-tab').forEach(t=>t.classList.remove('on'));
   btn.classList.add('on'); activatePage(page);
-  const t={workspace:'My Widgets',billing:'Billing',team:'Team',settings:'Settings'};
+  const t={workspace:'My Widgets',kpi:'KPIs',billing:'Billing',team:'Team',settings:'Settings'};
   document.getElementById('tbTitle').textContent=t[page]||'SystemVault';
 }
 function activatePage(p){
   document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
   document.getElementById(`pg-${p}`)?.classList.add('on');
   if(p==='billing') renderBilling();
+  if(p==='kpi') renderKPI();
 }
 
 // ── SIDEBAR FIX ──
@@ -910,7 +1928,717 @@ function showToast(msg){
   setTimeout(()=>t.classList.remove('show'),2600);
 }
 
-renderWS(); renderBilling();
+/* ════════════════════════════════════════════════════════════════
+   AUTH / ENTITLEMENTS / ROUTING (the new bits)
+═════════════════════════════════════════════════════════════════ */
+
+const LS = {
+  tenant:'sv_tenant', users:'sv_users', ents:'sv_entitlements',
+  session:'sv_session', widgets:'sv_widgets'
+};
+
+function genKey(){ return 'sv_live_' + Math.random().toString(36).slice(2,10) + Math.random().toString(36).slice(2,8); }
+function uid(p='u'){ return p + Math.random().toString(36).slice(2,8); }
+function initials(name){
+  return name.split(/\s+/).filter(Boolean).slice(0,2).map(s=>s[0]).join('').toUpperCase() || '??';
+}
+
+function seedIfEmpty(){
+  if(!localStorage.getItem(LS.tenant)){
+    localStorage.setItem(LS.tenant, JSON.stringify({
+      id:'t1', name:'Acme Co', plan:'Professional', masterKey: genKey()
+    }));
+  }
+  if(!localStorage.getItem(LS.users)){
+    localStorage.setItem(LS.users, JSON.stringify([
+      {id:'u1', email:'admin@acme.test', name:'Alex Admin',   role:'admin'},
+      {id:'u2', email:'sam@acme.test',   name:'Sam Manager',  role:'staff'},
+      {id:'u3', email:'jo@acme.test',    name:'Jo User',      role:'staff'}
+    ]));
+  }
+  if(!localStorage.getItem(LS.ents)){
+    localStorage.setItem(LS.ents, JSON.stringify([
+      {userId:'u2', widgetId:'opinion-ape', level:'admin'},
+      {userId:'u2', widgetId:'pulse-check', level:'user'},
+      {userId:'u3', widgetId:'pulse-check', level:'user'}
+    ]));
+  }
+  if(localStorage.getItem(LS.widgets)){
+    const stored = JSON.parse(localStorage.getItem(LS.widgets));
+    ALL.forEach(w=>{ if(stored[w.id]!==undefined) w.active = stored[w.id]; });
+  }
+}
+
+const getTenant   = () => JSON.parse(localStorage.getItem(LS.tenant));
+const setTenant   = t  => localStorage.setItem(LS.tenant, JSON.stringify(t));
+const getUsers    = () => JSON.parse(localStorage.getItem(LS.users)||'[]');
+const setUsers    = u  => localStorage.setItem(LS.users, JSON.stringify(u));
+const getEnts     = () => JSON.parse(localStorage.getItem(LS.ents)||'[]');
+const setEnts     = e  => localStorage.setItem(LS.ents, JSON.stringify(e));
+const getSession  = () => { const s=localStorage.getItem(LS.session); return s?JSON.parse(s):null; };
+const setSession  = s  => localStorage.setItem(LS.session, JSON.stringify(s));
+const clearSession= () => localStorage.removeItem(LS.session);
+
+function saveWidgetState(){
+  const o={}; ALL.forEach(w=>{ o[w.id]=w.active; });
+  localStorage.setItem(LS.widgets, JSON.stringify(o));
+}
+
+function currentUser(){
+  const s=getSession(); if(!s) return null;
+  return getUsers().find(u=>u.id===s.userId) || null;
+}
+
+function userEntFor(uid_, wid){
+  return getEnts().find(e=>e.userId===uid_ && e.widgetId===wid);
+}
+function userEnts(uid_){
+  return getEnts().filter(e=>e.userId===uid_);
+}
+function setUserEnt(uid_, wid, level){
+  const all = getEnts().filter(e=>!(e.userId===uid_&&e.widgetId===wid));
+  if(level) all.push({userId:uid_, widgetId:wid, level});
+  setEnts(all);
+}
+
+// ── ROUTING ──────────────────────────────────────────
+function route(){
+  const params = new URLSearchParams(location.search);
+  const app = params.get('app');
+  const u   = currentUser();
+
+  closeUserMenuPop();
+
+  if(!u){ showLogin(); return; }
+  hideLogin();
+
+  if(app){ showAppPage(app, u); return; }
+  if(u.role==='admin') showVault(u);
+  else                  showLauncher(u);
+}
+
+function navTo(query){
+  history.pushState({}, '', query?('?'+query):location.pathname);
+  route();
+}
+function goHome(){ navTo(''); }
+window.addEventListener('popstate', route);
+
+// ── LOGIN ────────────────────────────────────────────
+function showLogin(){
+  document.getElementById('loginOverlay').classList.add('open');
+  document.getElementById('shell').style.display='none';
+  document.getElementById('launcherView').style.display='none';
+  document.getElementById('appView').style.display='none';
+  document.getElementById('deniedView').style.display='none';
+  renderLoginAccounts();
+}
+function hideLogin(){
+  document.getElementById('loginOverlay').classList.remove('open');
+}
+
+function renderLoginAccounts(){
+  const html = getUsers().map(u=>`
+    <div class="auth-acct" onclick="login('${u.id}')">
+      <div class="auth-av">${initials(u.name)}</div>
+      <div class="auth-acct-body">
+        <div class="auth-acct-name">${u.name}</div>
+        <div class="auth-acct-email">${u.email}</div>
+      </div>
+      <span class="auth-acct-role role-${u.role}">${u.role==='admin'?'Admin':'Staff'}</span>
+    </div>`).join('');
+  document.getElementById('loginAccounts').innerHTML = html;
+}
+
+function login(userId){
+  setSession({userId, at:Date.now()});
+  history.replaceState({},'',location.pathname);
+  route();
+  const u = currentUser();
+  if(u) showToast(`Signed in as ${u.name}`);
+}
+
+function logout(){
+  clearSession();
+  closeUserMenuPop();
+  history.replaceState({},'',location.pathname);
+  route();
+}
+
+function claimWithKey(){
+  const k = document.getElementById('masterKeyInput').value.trim();
+  if(!k){ showToast('Enter a master key'); return; }
+  const t = getTenant();
+  if(t && k===t.masterKey){
+    // log in as the admin user (first admin found)
+    const admin = getUsers().find(u=>u.role==='admin');
+    if(admin){ login(admin.id); return; }
+  }
+  showToast('Invalid master key (demo: copy yours from Settings)');
+}
+
+// ── USER MENU ────────────────────────────────────────
+function toggleUserMenu(e){
+  if(e) e.stopPropagation();
+  document.getElementById('userMenuPop').classList.toggle('open');
+}
+function closeUserMenuPop(){
+  const p = document.getElementById('userMenuPop');
+  if(p) p.classList.remove('open');
+}
+document.addEventListener('click', e=>{
+  const m = document.getElementById('userMenu');
+  if(m && !m.contains(e.target)) closeUserMenuPop();
+});
+
+function updateUserChip(u){
+  document.getElementById('umAv').textContent  = initials(u.name);
+  document.getElementById('umName').textContent= u.name.split(' ')[0];
+  document.getElementById('umhName').textContent  = u.name;
+  document.getElementById('umhEmail').textContent = u.email;
+  const r = document.getElementById('umhRole');
+  r.textContent = u.role==='admin'?'Admin':'Staff';
+  r.className = 'umh-role role-' + u.role;
+}
+
+// ── VIEW: VAULT (admin) ──────────────────────────────
+function showVault(u){
+  document.getElementById('shell').style.display='flex';
+  document.getElementById('launcherView').style.display='none';
+  document.getElementById('appView').style.display='none';
+  document.getElementById('deniedView').style.display='none';
+  updateUserChip(u);
+  renderWS(); renderBilling(); renderKPI(); renderTeam(); renderSettings();
+}
+
+// ── VIEW: LAUNCHER (staff) ───────────────────────────
+function showLauncher(u){
+  document.getElementById('shell').style.display='none';
+  document.getElementById('launcherView').style.display='block';
+  document.getElementById('appView').style.display='none';
+  document.getElementById('deniedView').style.display='none';
+  renderLauncher(u);
+  renderTopUserSlot('lauUserSlot', u);
+}
+
+function renderLauncher(u){
+  document.getElementById('lauHelloName').textContent = u.name.split(' ')[0];
+  const t = getTenant();
+  document.getElementById('lauTenant').textContent = t?t.name:'Workspace';
+
+  const ents = userEnts(u.id);
+  const apps = ents.map(e=>{
+    const w = ALL.find(x=>x.id===e.widgetId);
+    return w ? {...w, level:e.level} : null;
+  }).filter(Boolean);
+
+  document.getElementById('lauHelloMeta').textContent = apps.length
+    ? `You have access to ${apps.length} app${apps.length>1?'s':''}.`
+    : 'No apps assigned to you yet.';
+
+  const grid = document.getElementById('lauGrid');
+  if(!apps.length){
+    grid.innerHTML = `<div class="lau-empty" style="grid-column:1/-1">
+      <b>No apps yet</b>
+      Ask your SystemVault admin to grant you a permit on one of the company's widgets.
+    </div>`;
+    return;
+  }
+  grid.innerHTML = apps.map((w,i)=>`
+    <div class="lau-card" style="animation:fadeUp .28s ${i*.05}s var(--ease) both" onclick="navTo('app=${w.id}')">
+      <div class="lau-card-head">
+        <div class="lau-card-icon">${w.icon}</div>
+        <span class="lau-level ${w.level}">${w.level==='admin'?'Admin':'User'}</span>
+      </div>
+      <div class="lau-card-name">${w.name}</div>
+      <div class="lau-card-desc">${w.desc}</div>
+      <div class="lau-card-foot">
+        <span>${w.cat}</span>
+        <span class="lau-card-arrow">Open →</span>
+      </div>
+    </div>`).join('');
+}
+
+function renderTopUserSlot(slotId, u){
+  const slot = document.getElementById(slotId);
+  if(!slot) return;
+  slot.innerHTML = `
+    <div class="user-menu" onclick="event.stopPropagation()">
+      <div class="user-menu-trigger" onclick="document.getElementById('miniPop-${slotId}').classList.toggle('open')">
+        <div class="user-menu-av">${initials(u.name)}</div>
+        <div class="user-menu-name">${u.name.split(' ')[0]}</div>
+      </div>
+      <div class="user-menu-pop" id="miniPop-${slotId}">
+        <div class="umh">
+          <div class="umh-name">${u.name}</div>
+          <div class="umh-email">${u.email}</div>
+          <span class="umh-role role-${u.role}">${u.role==='admin'?'Admin':'Staff'}</span>
+        </div>
+        <div class="um-item" onclick="logout()">
+          <svg viewBox="0 0 16 16"><path d="M10 11l3-3-3-3M13 8H6"/><path d="M9 1H3a1 1 0 00-1 1v12a1 1 0 001 1h6"/></svg>
+          Sign out
+        </div>
+      </div>
+    </div>`;
+}
+
+// ── VIEW: APP STUB ───────────────────────────────────
+function showAppPage(appId, u){
+  const widget = ALL.find(w=>w.id===appId);
+  const ent    = userEntFor(u.id, appId);
+  const isAdmin= u.role==='admin';
+  const level  = isAdmin ? 'admin' : (ent?ent.level:null);
+  const allowed= !!widget && (isAdmin || (ent && widget.active));
+
+  document.getElementById('shell').style.display='none';
+  document.getElementById('launcherView').style.display='none';
+
+  if(!allowed){
+    document.getElementById('appView').style.display='none';
+    document.getElementById('deniedView').style.display='block';
+    let msg = "You don't have a permit for this app.";
+    if(widget && !widget.active && !isAdmin) msg = `${widget.name} isn't active on this workspace right now.`;
+    if(!widget) msg = `That app doesn't exist (id: ${appId}).`;
+    document.getElementById('dnMsg').textContent = msg;
+    document.getElementById('dnHeader').textContent = widget?widget.name:'Access denied';
+    renderTopUserSlot('dnUserSlot', u);
+    return;
+  }
+
+  document.getElementById('deniedView').style.display='none';
+  document.getElementById('appView').style.display='block';
+  document.getElementById('appTopTitle').textContent = widget.name;
+  renderTopUserSlot('appUserSlot', u);
+
+  document.getElementById('appBody').innerHTML = `
+    <div class="app-hero">
+      <div class="app-hero-icon">${widget.icon}</div>
+      <div class="app-hero-body">
+        <div class="app-hero-eyebrow">${widget.cat} · App</div>
+        <div class="app-hero-name">${widget.name}</div>
+        <div class="app-hero-desc">${widget.desc}</div>
+      </div>
+    </div>
+    <div class="app-meta">
+      <div class="app-meta-card"><div class="app-meta-l">Signed in as</div><div class="app-meta-v">${u.name}</div></div>
+      <div class="app-meta-card"><div class="app-meta-l">Your level</div><div class="app-meta-v">${level==='admin'?'Admin':'User'}</div></div>
+      <div class="app-meta-card"><div class="app-meta-l">App URL</div><div class="app-meta-v">?app=${widget.id}</div></div>
+    </div>
+    <div class="app-stub-note">
+      <b>This is a placeholder for the real ${widget.name} app.</b><br>
+      In production this URL would load the actual app — completely independent of the SystemVault dashboard.
+      The access check above is what gates entry: ${isAdmin
+        ? 'you got in because you are the workspace admin.'
+        : `you got in because the admin granted you a <b>${level}</b>-level permit for this widget.`}
+    </div>`;
+}
+
+// ── TEAM PAGE ────────────────────────────────────────
+const CATEGORIES = [...new Set(ALL.map(w=>w.cat))];
+
+function renderTeam(){
+  const list = document.getElementById('teamList');
+  if(!list) return;
+  const users = getUsers();
+  const me = currentUser();
+
+  list.innerHTML = users.map(u=>{
+    const ents = userEnts(u.id);
+    const isAdmin = u.role==='admin';
+    const isMe    = me && me.id===u.id;
+    const summary = isAdmin ? 'Full vault access' : `${ents.length} app${ents.length===1?'':'s'}`;
+    return `
+      <div class="tu" id="tu-${u.id}">
+        <div class="tu-row" onclick="toggleTeamUser('${u.id}')">
+          <div class="tu-av">${initials(u.name)}</div>
+          <div class="tu-body">
+            <div class="tu-name">${u.name}${isMe?' <span style="color:var(--ink-4);font-weight:400;font-size:11px">(you)</span>':''}</div>
+            <div class="tu-email">${u.email}</div>
+          </div>
+          <div class="tu-meta">
+            <span class="auth-acct-role role-${u.role}">${u.role==='admin'?'Admin':'Staff'}</span>
+            <span class="tu-count">${summary}</span>
+            ${isAdmin ? '' : `<button class="tu-rm" onclick="event.stopPropagation();removeTeamUser('${u.id}')" title="Remove">✕</button>`}
+            <span class="tu-chev">▶</span>
+          </div>
+        </div>
+        <div class="tu-perms">
+          ${isAdmin
+            ? `<div class="tu-empty">Workspace owners always have access to every app and to this control panel. To downgrade, demote them first.</div>`
+            : renderUserPerms(u)}
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function renderUserPerms(u){
+  const t = getTenant();
+  const inviteUrl = `${location.origin}${location.pathname}#invite=${u.id}&key=${t?t.masterKey.slice(0,12):''}`;
+  const cats = CATEGORIES.map(cat=>{
+    const widgets = ALL.filter(w=>w.cat===cat);
+    const ents = widgets.map(w=>userEntFor(u.id,w.id)).filter(Boolean);
+    const all = ents.length===widgets.length;
+    const some= ents.length>0 && !all;
+    const cls = all?'checked':(some?'partial':'');
+    return `
+      <div class="tu-cat" id="tucat-${u.id}-${cat.replace(/\s+/g,'_')}">
+        <div class="tu-cat-head" onclick="toggleCat('${u.id}','${cat.replace(/\s+/g,'_')}')">
+          <div class="tu-cb ${cls}" onclick="event.stopPropagation();toggleCatAll('${u.id}','${cat}')">
+            <svg class="tick" viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg>
+            <svg class="dash" viewBox="0 0 10 10"><line x1="2" y1="5" x2="8" y2="5"/></svg>
+          </div>
+          <div class="tu-cat-name">${cat}</div>
+          <div class="tu-cat-count">${ents.length} / ${widgets.length}</div>
+          <div class="tu-cat-chev">▶</div>
+        </div>
+        <div class="tu-cat-body">
+          ${widgets.map(w=>renderWidgetPerm(u.id,w)).join('')}
+        </div>
+      </div>`;
+  }).join('');
+
+  return `
+    <div class="tu-invite">
+      <span class="tu-invite-l">Invite link</span>
+      <span class="tu-invite-v" id="inv-${u.id}">${inviteUrl}</span>
+      <button class="tu-invite-cp" onclick="copyInvite('${u.id}')">Copy</button>
+    </div>
+    ${cats}`;
+}
+
+function renderWidgetPerm(uid_, w){
+  const ent = userEntFor(uid_, w.id);
+  const has = !!ent;
+  const lvl = ent?ent.level:null;
+  return `
+    <div class="tu-w" id="tuw-${uid_}-${w.id}">
+      <div class="tu-w-cb ${has?'checked':''}" onclick="toggleWidget('${uid_}','${w.id}')">
+        <svg viewBox="0 0 10 10"><polyline points="1.5,5 4,7.5 8.5,2.5"/></svg>
+      </div>
+      <span class="tu-w-ic">${w.icon}</span>
+      <span class="tu-w-name">${w.name}${w.active?'':' <span style="color:var(--ink-4);font-size:10px">(inactive)</span>'}</span>
+      <div class="tu-w-lvl">
+        <button class="${lvl==='user'?'on':''}" ${has?'':'disabled'} onclick="setWidgetLevel('${uid_}','${w.id}','user')">User</button>
+        <button class="${lvl==='admin'?'on':''}" ${has?'':'disabled'} onclick="setWidgetLevel('${uid_}','${w.id}','admin')">Admin</button>
+      </div>
+    </div>`;
+}
+
+function toggleTeamUser(uid_){
+  const el = document.getElementById('tu-'+uid_);
+  if(el) el.classList.toggle('expanded');
+}
+function toggleCat(uid_, catKey){
+  const el = document.getElementById(`tucat-${uid_}-${catKey}`);
+  if(el) el.classList.toggle('open');
+}
+
+function toggleCatAll(uid_, cat){
+  const widgets = ALL.filter(w=>w.cat===cat);
+  const ents = widgets.map(w=>userEntFor(uid_,w.id)).filter(Boolean);
+  const all = ents.length===widgets.length;
+  if(all){
+    // remove all
+    widgets.forEach(w=>setUserEnt(uid_, w.id, null));
+    showToast(`Revoked ${cat} for this person`);
+  } else {
+    widgets.forEach(w=>{ if(!userEntFor(uid_,w.id)) setUserEnt(uid_, w.id, 'user'); });
+    showToast(`Granted ${cat} (User level)`);
+  }
+  renderTeam();
+  reopenExpanded(uid_);
+}
+
+function toggleWidget(uid_, wid){
+  const ent = userEntFor(uid_, wid);
+  if(ent){ setUserEnt(uid_, wid, null); }
+  else   { setUserEnt(uid_, wid, 'user'); }
+  renderTeam();
+  reopenExpanded(uid_);
+}
+
+function setWidgetLevel(uid_, wid, level){
+  const ent = userEntFor(uid_, wid);
+  if(!ent) return;
+  setUserEnt(uid_, wid, level);
+  renderTeam();
+  reopenExpanded(uid_);
+}
+
+function reopenExpanded(uid_){
+  const el = document.getElementById('tu-'+uid_);
+  if(el) el.classList.add('expanded');
+}
+
+function addTeamUser(){
+  const name  = document.getElementById('newUserName').value.trim();
+  const email = document.getElementById('newUserEmail').value.trim();
+  if(!name || !email){ showToast('Need name and email'); return; }
+  const users = getUsers();
+  if(users.some(u=>u.email.toLowerCase()===email.toLowerCase())){ showToast('That email already exists'); return; }
+  const newU = { id:uid('u'), name, email, role:'staff' };
+  users.push(newU); setUsers(users);
+  document.getElementById('newUserName').value='';
+  document.getElementById('newUserEmail').value='';
+  renderTeam();
+  showToast(`${name} added — grant them apps below`);
+}
+
+function removeTeamUser(uid_){
+  if(!confirm('Remove this person and all their permits?')) return;
+  setUsers(getUsers().filter(u=>u.id!==uid_));
+  setEnts(getEnts().filter(e=>e.userId!==uid_));
+  renderTeam();
+  showToast('Person removed');
+}
+
+function copyInvite(uid_){
+  const v = document.getElementById('inv-'+uid_).textContent;
+  navigator.clipboard?.writeText(v);
+  showToast('Invite link copied');
+}
+
+// ── SETTINGS PAGE ────────────────────────────────────
+function renderSettings(){
+  const t = getTenant();
+  if(!t) return;
+  const tier = LICENSE_TIERS.find(lt=>lt.name===t.plan) || LICENSE_TIERS[1];
+
+  document.getElementById('setTenantName').textContent = t.name;
+  document.getElementById('setTenantUsers').textContent= getUsers().length + ' total';
+  document.getElementById('setTenantApps').textContent = ALL.filter(w=>w.active).length + ' / ' + ALL.length;
+  document.getElementById('setMasterKey').textContent  = t.masterKey;
+
+  // Tier info
+  document.getElementById('setTierName').textContent  = tier.name;
+  document.getElementById('setTierPrice').textContent = tier.priceLabel + '/yr';
+  document.getElementById('setTierHours').textContent = tier.hours ? tier.hours + ' hrs/yr included' : 'Pay-as-you-go (£50/hr)';
+
+  // Sidebar label
+  const sbLabel = document.getElementById('sbPlanLabel');
+  if(sbLabel) sbLabel.textContent = tier.name;
+}
+
+function copyMasterKey(){
+  const t = getTenant();
+  navigator.clipboard?.writeText(t.masterKey);
+  showToast('Master key copied');
+}
+function regenMasterKey(){
+  if(!confirm('Generate a new master key? The old one will stop working.')) return;
+  const t = getTenant(); t.masterKey = genKey(); setTenant(t);
+  renderSettings();
+  showToast('New master key generated');
+}
+function resetDemo(){
+  if(!confirm('Wipe all demo data and reseed?')) return;
+  Object.values(LS).forEach(k=>localStorage.removeItem(k));
+  // reload from default ALL definition by reloading the page
+  location.reload();
+}
+
+// ── KPI DASHBOARD ────────────────────────────────────
+
+const WIDGET_KPIS = {
+  'opinion-ape': [
+    {label:'Suggestions this month', target:50, unit:'', fmt:v=>Math.round(v), gen:()=>rand(28,62)},
+    {label:'Manager response rate',  target:85, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(60,97)},
+    {label:'Avg response time',      target:24, unit:'hrs', fmt:v=>v.toFixed(1), gen:()=>rand(8,40), lower:true},
+  ],
+  'pulse-check': [
+    {label:'Survey participation', target:70, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(45,92)},
+    {label:'Avg morale score',     target:7.5, unit:'/10', fmt:v=>v.toFixed(1), gen:()=>rand(5.5,9.2)},
+    {label:'Response delta (WoW)',  target:0, unit:'pp', fmt:v=>(v>0?'+':'')+v.toFixed(1), gen:()=>rand(-8,8)},
+  ],
+  'desk-flow': [
+    {label:'Bookings this week', target:120, unit:'', fmt:v=>Math.round(v), gen:()=>rand(70,165)},
+    {label:'Utilisation rate',   target:75, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(48,95)},
+  ],
+  'onboard-ez': [
+    {label:'Active onboardings', target:null, unit:'', fmt:v=>Math.round(v), gen:()=>rand(1,12)},
+    {label:'On-track rate',      target:90, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(60,100)},
+    {label:'Avg days to complete',target:14, unit:'days', fmt:v=>v.toFixed(1), gen:()=>rand(7,25), lower:true},
+  ],
+  'shiftwise': [
+    {label:'Coverage gaps',      target:0,  unit:'', fmt:v=>Math.round(v), gen:()=>rand(0,8), lower:true},
+    {label:'Last-min swaps',     target:5,  unit:'', fmt:v=>Math.round(v), gen:()=>rand(0,14), lower:true},
+    {label:'Staff satisfaction',  target:80, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(55,96)},
+  ],
+  'doc-vault': [
+    {label:'Total documents',   target:null, unit:'', fmt:v=>Math.round(v), gen:()=>rand(40,200)},
+    {label:'Up-to-date rate',   target:95, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(70,100)},
+  ],
+  'kudos': [
+    {label:'Kudos given this week', target:25, unit:'', fmt:v=>Math.round(v), gen:()=>rand(5,45)},
+    {label:'Participation',         target:60, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(25,85)},
+  ],
+  'incident-log': [
+    {label:'Open incidents',      target:5,  unit:'', fmt:v=>Math.round(v), gen:()=>rand(0,15), lower:true},
+    {label:'Avg resolution time', target:48, unit:'hrs', fmt:v=>v.toFixed(1), gen:()=>rand(12,80), lower:true},
+    {label:'Overdue rate',        target:10, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(0,35), lower:true},
+  ],
+  'quick-poll': [
+    {label:'Polls this month',   target:8,  unit:'', fmt:v=>Math.round(v), gen:()=>rand(2,16)},
+    {label:'Avg response rate',  target:65, unit:'%', fmt:v=>Math.round(v), gen:()=>rand(30,90)},
+  ],
+  'permit-work': [
+    {label:'Active permits',          target:null, unit:'',   fmt:v=>Math.round(v), gen:()=>rand(3,22)},
+    {label:'Permits issued (month)',  target:40,   unit:'',   fmt:v=>Math.round(v), gen:()=>rand(15,58)},
+    {label:'Overdue permits',         target:0,    unit:'',   fmt:v=>Math.round(v), gen:()=>rand(0,6), lower:true},
+    {label:'Closure rate',            target:95,   unit:'%',  fmt:v=>Math.round(v), gen:()=>rand(72,100)},
+    {label:'Avg approval time',       target:4,    unit:'hrs',fmt:v=>v.toFixed(1),  gen:()=>rand(1,9), lower:true},
+    {label:'High-risk permits (live)',target:null,  unit:'',   fmt:v=>Math.round(v), gen:()=>rand(0,7)},
+  ],
+};
+
+function rand(lo,hi){ return lo + Math.random()*(hi-lo); }
+
+// Generate 7-point sparkline data around the current value
+function genSparkline(current, variance){
+  const pts = [];
+  for(let i=0;i<7;i++){
+    const drift = current + (Math.random()-.5)*variance*2;
+    pts.push(Math.max(0, drift));
+  }
+  pts[6] = current; // last point is the actual value
+  return pts;
+}
+
+function sparkSvg(pts, color){
+  const w=72, h=28, pad=2;
+  const min=Math.min(...pts), max=Math.max(...pts);
+  const range = max-min || 1;
+  const coords = pts.map((v,i)=>{
+    const x = pad + (i/(pts.length-1))*(w-pad*2);
+    const y = pad + (1-(v-min)/range)*(h-pad*2);
+    return `${x.toFixed(1)},${y.toFixed(1)}`;
+  }).join(' ');
+  return `<svg viewBox="0 0 ${w} ${h}"><polyline points="${coords}" class="spark-${color}"/></svg>`;
+}
+
+function metricHealth(val, target, lower){
+  if(target===null) return 'good';
+  if(lower){
+    if(val <= target) return 'good';
+    if(val <= target*1.5) return 'warn';
+    return 'bad';
+  }
+  const ratio = val/target;
+  if(ratio >= 0.9) return 'good';
+  if(ratio >= 0.65) return 'warn';
+  return 'bad';
+}
+
+function cardHealth(metrics){
+  const h = metrics.map(m=>m._health);
+  if(h.includes('bad')) return 'bad';
+  if(h.includes('warn')) return 'warn';
+  return 'good';
+}
+
+const healthLabel = {good:'On track', warn:'Needs attention', bad:'At risk'};
+const healthCls   = {good:'health-good', warn:'health-warn', bad:'health-bad'};
+const barCls      = {good:'bar-green', warn:'bar-amber', bad:'bar-red'};
+const sparkCls    = {good:'green', warn:'amber', bad:'red'};
+
+function renderKPI(){
+  const active = ALL.filter(w=>w.active);
+  const users  = getUsers();
+  const ents   = getEnts();
+
+  // Pulse strip
+  const loginRate = Math.round(55 + Math.random()*35);
+  const totalEvents = Math.round(120 + Math.random()*280);
+  const overallHealth = active.length >= 3 ? 'good' : (active.length >= 1 ? 'warn' : 'bad');
+
+  document.getElementById('kpiPulse').innerHTML = `
+    <div class="kpi-ps">
+      <div class="kpi-ps-l">Active apps</div>
+      <div class="kpi-ps-v">${active.length}</div>
+      <div class="kpi-ps-note">of ${ALL.length} available</div>
+    </div>
+    <div class="kpi-ps">
+      <div class="kpi-ps-l">Team size</div>
+      <div class="kpi-ps-v">${users.length}</div>
+      <div class="kpi-ps-note">${ents.length} total permits</div>
+    </div>
+    <div class="kpi-ps">
+      <div class="kpi-ps-l">Login rate (7d)</div>
+      <div class="kpi-ps-v">${loginRate}%</div>
+      <div class="kpi-ps-note">${Math.round(users.length * loginRate/100)} of ${users.length} staff</div>
+    </div>
+    <div class="kpi-ps">
+      <div class="kpi-ps-l">Overall health</div>
+      <div class="kpi-ps-v" style="font-size:16px;margin-top:6px">${healthLabel[overallHealth]}</div>
+      <div class="kpi-ps-dot dot-${overallHealth==='good'?'green':(overallHealth==='warn'?'amber':'red')}"></div>
+      <div class="kpi-ps-note">${totalEvents} events this week</div>
+    </div>`;
+
+  // Per-app KPI cards
+  if(!active.length){
+    document.getElementById('kpiGrid').innerHTML = `
+      <div class="kpi-empty"><b>No active apps</b>Add widgets from the Workspace tab to start tracking KPIs.</div>`;
+    return;
+  }
+
+  document.getElementById('kpiGrid').innerHTML = active.map(w=>{
+    const defs = WIDGET_KPIS[w.id] || [];
+    const metrics = defs.map(d=>{
+      const val = d.gen();
+      const h = metricHealth(val, d.target, d.lower);
+      const variance = d.target !== null ? Math.abs(d.target)*0.3 : val*0.3;
+      const spark = genSparkline(val, variance);
+      return {...d, val, _health:h, spark};
+    });
+    const health = cardHealth(metrics);
+
+    return `
+      <div class="kpi-card">
+        <div class="kpi-card-head">
+          <div class="kpi-card-icon">${w.icon}</div>
+          <div class="kpi-card-name">${w.name}</div>
+          <span class="kpi-card-health ${healthCls[health]}">${healthLabel[health]}</span>
+        </div>
+        <div class="kpi-card-body">
+          ${metrics.map(m=>{
+            const pct = m.target!==null
+              ? (m.lower ? Math.max(0,Math.min(100, (1- (m.val-m.target)/m.target)*100)) : Math.min(100, (m.val/m.target)*100))
+              : null;
+            return `
+            <div class="kpi-metric">
+              <div class="kpi-m-body">
+                <div class="kpi-m-label">${m.label}</div>
+                <div class="kpi-m-row">
+                  <span class="kpi-m-val">${m.fmt(m.val)}</span>
+                  <span class="kpi-m-unit">${m.unit}</span>
+                </div>
+                ${m.target!==null ? `<div class="kpi-m-target">Target: ${m.fmt(m.target)}${m.unit}</div>
+                <div class="kpi-m-bar"><div class="kpi-m-bar-fill ${barCls[m._health]}" style="width:${Math.max(4,Math.min(100,pct))}%"></div></div>` : ''}
+              </div>
+              <div class="kpi-spark">${sparkSvg(m.spark, sparkCls[m._health])}</div>
+            </div>`;
+          }).join('')}
+        </div>
+        <div class="kpi-card-foot">
+          <span class="kpi-cat-badge">${w.cat}</span>
+          <button class="kpi-open" onclick="navTo('app=${w.id}')">Open app →</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── PERSIST WIDGET STATE ─────────────────────────────
+// Wrap existing widget mutations so they survive reload
+const _origConfirm = confirmWorkflow;
+confirmWorkflow = function(){ _origConfirm(); saveWidgetState(); renderTeam(); renderSettings(); };
+const _origQuickAdd = quickAdd;
+quickAdd = function(id){ _origQuickAdd(id); setTimeout(()=>{saveWidgetState(); renderTeam(); renderSettings();}, 260); };
+const _origQuickRem = quickRemove;
+quickRemove = function(id){ _origQuickRem(id); setTimeout(()=>{saveWidgetState(); renderTeam(); renderSettings();}, 260); };
+
+// ── BOOT ─────────────────────────────────────────────
+seedIfEmpty();
+route();
 </script>
 </body>
 </html>
